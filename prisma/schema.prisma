@@ -14,5 +14,11 @@ model User {
   password      String
   isAdmin       Boolean  @default(false)
   emailVerified Boolean  @default(false)
-  createAt      DateTime @default(now())
+  createdAt     DateTime @default(now())
+}
+
+model VerifyEmail {
+  email    String   @unique
+  code     String
+  createAt DateTime @default(now())
 }

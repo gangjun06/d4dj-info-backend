@@ -1,0 +1,43 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  name: String!
+  email: String!
+  emailVerified: Boolean!
+  isAdmin: Boolean!
+  createdAt: Timestamp!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type Query {
+  me: User!
+}
+
+type Mutation {
+  signUp(data: UserSignUpInput!): User!
+  emailVerify(data: EmailVerifyInput!): String!
+  login(data: SignInInput!): String!
+}
+
+input UserSignUpInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+input EmailVerifyInput {
+  email: String!
+  code: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}

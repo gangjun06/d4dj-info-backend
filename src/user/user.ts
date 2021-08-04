@@ -13,9 +13,6 @@ export class User {
   name: string;
 
   @Field()
-  password: string;
-
-  @Field()
   @IsEmail()
   email: string;
 
