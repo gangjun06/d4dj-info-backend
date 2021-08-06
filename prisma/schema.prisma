@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgres"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -26,4 +26,49 @@ model VerifyEmail {
 model Resource {
   name       String   @unique
   lastUpdate DateTime @default(now())
+}
+
+model Unit {
+  id                   Int         @id
+  name                 String
+  canTraining          Boolean
+  summary              String
+  mainColorCode        String
+  subColorCode         String
+  shortName            String
+  initDeckCharacterIds Int[]
+  Character            Character[]
+}
+
+model Character {
+  id               Int    @id
+  fullName         String
+  firstName        String
+  firstNameEnglish String
+  unitPrimaryKey   Int
+  fullNameEnglish  String
+  colorCode        String
+
+  unit Unit   @relation(fields: [unitPrimaryKey], references: [id])
+  Card Card[]
+}
+
+model Card {
+  id                        Int      @id
+  rarityPrimaryKey          Int
+  cardName                  String
+  attributePrimaryKey       Int
+  characterPrimaryKey       Int
+  skillParameterPrimaryKey  Int
+  skillName                 String
+  maxParameters             Int[]
+  gachaMessage              String
+  clothCardId               Int
+  debutOrder                Int
+  cardIllustHeadDistanceY   Float[]
+  cardIllustCenterDistanceX Float[]
+  startDate                 DateTime
+  endDate                   DateTime
+
+  character Character @relation(fields: [characterPrimaryKey], references: [id])
 }

@@ -10,6 +10,7 @@ import { RoleGuard } from './user/role.guard';
 import { ResourceModule } from './resource/resource.module';
 import { PrismaService } from './prisma.service';
 import { MusicModule } from './music/music.module';
+import { CharacterModule } from './character/character.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { MusicModule } from './music/music.module';
     UserModule,
     ResourceModule,
     MusicModule,
+    CharacterModule,
   ],
   controllers: [],
   providers: [

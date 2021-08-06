@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Card" ALTER COLUMN "cardIllustHeadDistanceY" SET DATA TYPE DOUBLE PRECISION[],
+ALTER COLUMN "cardIllustCenterDistanceX" SET DATA TYPE DOUBLE PRECISION[];
