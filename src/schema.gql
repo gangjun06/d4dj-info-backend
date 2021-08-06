@@ -21,6 +21,12 @@ type UserWithToken {
   token: String!
 }
 
+type Resource {
+  name: String!
+  lastUpdate: Timestamp!
+  resources: [Resource!]!
+}
+
 type Query {
   me: User!
 }
@@ -30,6 +36,7 @@ type Mutation {
   emailVerifyReq(email: String!): Boolean!
   emailVerify(data: EmailVerifyInput!): Boolean!
   login(data: SignInInput!): UserWithToken!
+  parseResource(data: ParseResourceInput!): Boolean!
 }
 
 input UserSignUpInput {
@@ -46,4 +53,12 @@ input EmailVerifyInput {
 input SignInInput {
   email: String!
   password: String!
+}
+
+input ParseResourceInput {
+  target: ResourceType!
+}
+
+enum ResourceType {
+  Music
 }

@@ -7,6 +7,9 @@ import { APP_GUARD } from '@nestjs/core';
 import * as Joi from 'joi';
 import { AuthGuard } from './user/auth.guard';
 import { RoleGuard } from './user/role.guard';
+import { ResourceModule } from './resource/resource.module';
+import { PrismaService } from './prisma.service';
+import { MusicModule } from './music/music.module';
 
 @Module({
   imports: [
@@ -25,6 +28,8 @@ import { RoleGuard } from './user/role.guard';
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
     }),
     UserModule,
+    ResourceModule,
+    MusicModule,
   ],
   controllers: [],
   providers: [

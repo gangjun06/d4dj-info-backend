@@ -22,3 +22,8 @@ model VerifyEmail {
   code     String
   createAt DateTime @default(now())
 }
+
+model Resource {
+  name       String   @unique
+  lastUpdate DateTime @default(now())
+}
