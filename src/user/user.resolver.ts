@@ -1,4 +1,11 @@
-import { Inject, UnauthorizedException, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  NotFoundException,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -10,9 +17,10 @@ import {
   ArgsType,
 } from '@nestjs/graphql';
 import { IsEmail, Length, MaxLength, MinLength } from 'class-validator';
+import { string } from 'joi';
 import { AuthGuard } from './auth.guard';
-import { User } from './user';
-import { CurrentUser } from './user.decorator';
+import { User, UserWithToken } from './user';
+import { CurrentUser, Auth } from './user.decorator';
 import { UserService } from './user.service';
 
 @InputType()
@@ -59,12 +67,12 @@ export class UserResolver {
   constructor(@Inject(UserService) private userService: UserService) {}
 
   @Query((returns) => User)
-  @UseGuards(new AuthGuard())
+  @Auth({ onlyVerify: false })
   async me(@CurrentUser() user: User) {
     return user;
   }
 
-  @Mutation((returns) => User)
+  @Mutation((returns) => UserWithToken)
   async signUp(@Args('data') data: UserSignUpInput) {
     const user = await this.userService.createUser(
       data.email,
@@ -75,12 +83,22 @@ export class UserResolver {
     return user;
   }
 
-  @Mutation((returns) => String)
+  @Mutation((returns) => Boolean)
+  async emailVerifyReq(@Args('email') email: string) {
+    const user = this.userService.getUserByEmail(email);
+    if (!user) throw new NotFoundException('can not find user');
+    if ((await user).emailVerified)
+      throw new ConflictException('user is already verified');
+    await this.userService.sendVerifyMail(email);
+    return true;
+  }
+
+  @Mutation((returns) => Boolean)
   async emailVerify(@Args('data') data: EmailVerifyInput) {
     return this.userService.emailVerify(data.email, data.code);
   }
 
-  @Mutation((returns) => String)
+  @Mutation((returns) => UserWithToken)
   async login(@Args('data') data: SignInInput) {
     return this.userService.login(data.email, data.password);
   }

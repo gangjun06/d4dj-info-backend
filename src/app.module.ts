@@ -3,7 +3,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import * as Joi from 'joi';
+import { AuthGuard } from './user/auth.guard';
+import { RoleGuard } from './user/role.guard';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,6 +27,15 @@ import * as Joi from 'joi';
     UserModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -17,11 +17,19 @@ export class User {
   email: string;
 
   @Field((type) => Boolean, { defaultValue: false })
-  emailVerified: Boolean;
+  emailVerified: boolean;
 
   @Field((type) => Boolean, { defaultValue: false })
-  isAdmin: Boolean;
+  isAdmin: boolean;
 
   @Field((type) => Date)
   createdAt: Date;
+}
+
+@ObjectType()
+export class UserWithToken {
+  @Field()
+  user: User;
+  @Field()
+  token: string;
 }
