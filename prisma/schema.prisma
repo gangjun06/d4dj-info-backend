@@ -37,7 +37,7 @@ model Unit {
   subColorCode         String
   shortName            String
   initDeckCharacterIds Int[]
-  Character            Character[]
+  Characters           Character[]
 }
 
 model Character {
@@ -53,11 +53,31 @@ model Character {
   Card Card[]
 }
 
+enum Attribute {
+  STREET
+  PARTY
+  CUTE
+  COOL
+  ELEGANT
+}
+
+model Skill {
+  id                 Int    @id
+  minRecoveryValue   Int
+  maxRecoveryValue   Int
+  comboSupportCount  Int
+  scoreUpRate        Int
+  minSeconds         Float
+  maxSeconds         Float
+  perfectScoreUpRate Int
+  Card               Card[]
+}
+
 model Card {
-  id                        Int      @id
-  rarityPrimaryKey          Int
+  id                        Int       @id
+  rarity                    Int
   cardName                  String
-  attributePrimaryKey       Int
+  attribute                 Attribute
   characterPrimaryKey       Int
   skillParameterPrimaryKey  Int
   skillName                 String
@@ -71,4 +91,5 @@ model Card {
   endDate                   DateTime
 
   character Character @relation(fields: [characterPrimaryKey], references: [id])
+  skill     Skill     @relation(fields: [skillParameterPrimaryKey], references: [id])
 }

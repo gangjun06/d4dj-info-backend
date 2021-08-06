@@ -21,6 +21,27 @@ type UserWithToken {
   token: String!
 }
 
+type Character {
+  id: Float!
+  fullName: String!
+  firstName: String!
+  firstNameEnglish: String!
+  unitPrimaryKey: Float!
+  fullNameEnglish: String!
+  colorCode: String!
+}
+
+type Skill {
+  id: Float!
+  minRecoveryValue: Float!
+  maxRecoveryValue: Float!
+  comboSupportCount: Float!
+  scoreUpRate: Float!
+  minSeconds: Float!
+  maxSeconds: Float!
+  perfectScoreUpRate: Float!
+}
+
 type Resource {
   name: String!
   lastUpdate: Timestamp!

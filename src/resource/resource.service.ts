@@ -1,8 +1,14 @@
-import { Card, Character, Unit } from '@/character/character';
+import {
+  AttributeForParse,
+  Card,
+  Character,
+  Skill,
+  Unit,
+} from '@/character/character';
 import { Music } from '@/music/music';
 import { PrismaService } from '@/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Attribute, Prisma } from '@prisma/client';
 import axios from 'axios';
 import { Resource, ResourceType } from './resource';
 
@@ -35,6 +41,24 @@ export class ResourceService {
       );
       const result = this.parse<Music>(res.data);
     } else if (target === ResourceType.Character) {
+      {
+        const res = await axios.get(
+          'https://api.d4dj.info/api/file/download?path=Master/SkillMaster.json',
+        );
+        const result = this.parse<Skill>(res.data);
+        let insertData: Prisma.SkillCreateManyInput[] = [];
+
+        result.forEach((item) => {
+          insertData.push({
+            ...item,
+          });
+        });
+
+        await this.prismaService.skill.createMany({
+          data: insertData,
+          skipDuplicates: true,
+        });
+      }
       {
         const res = await axios.get(
           'https://api.d4dj.info/api/file/download?path=Master/UnitMaster.json',
@@ -84,8 +108,24 @@ export class ResourceService {
         let insertData: Prisma.CardCreateManyInput[] = [];
 
         result.forEach((item) => {
+          const attribute: Attribute =
+            Attribute[AttributeForParse[item.attributePrimaryKey]];
           insertData.push({
-            ...item,
+            id: item.id,
+            attribute,
+            cardName: item.cardName,
+            characterPrimaryKey: item.characterPrimaryKey,
+            clothCardId: item.clothCardId,
+            debutOrder: item.debutOrder,
+            gachaMessage: item.gachaMessage,
+            rarity: item.rarityPrimaryKey,
+            skillName: item.skillName,
+            skillParameterPrimaryKey: item.skillParameterPrimaryKey,
+            cardIllustCenterDistanceX: item.cardIllustCenterDistanceX,
+            cardIllustHeadDistanceY: item.cardIllustHeadDistanceY,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            maxParameters: item.maxParameters,
           });
         });
         await this.prismaService.card.createMany({

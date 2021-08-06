@@ -1,4 +1,5 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Attribute, Prisma } from '@prisma/client';
 
 @ObjectType()
 export class Unit {
@@ -16,8 +17,10 @@ export class Unit {
   subColorCode: string;
   @Field()
   shortName: string;
-  @Field((type) => [Number])
-  initDeckCharacterIds: number[];
+
+  initDeckCharacterIds?: number[];
+  @Field((type) => [Character], { nullable: false })
+  characters?: Character[];
 }
 
 @ObjectType()
@@ -39,19 +42,59 @@ export class Character {
 }
 
 @ObjectType()
-export class Card {
+export class Skill {
   @Field()
   id: number;
   @Field()
-  rarityPrimaryKey: number;
+  minRecoveryValue: number;
+  @Field()
+  maxRecoveryValue: number;
+  @Field()
+  comboSupportCount: number;
+  @Field()
+  scoreUpRate: number;
+  @Field()
+  minSeconds: number;
+  @Field()
+  maxSeconds: number;
+  @Field()
+  perfectScoreUpRate: number;
+}
+
+registerEnumType(Attribute, { name: 'attribute' });
+
+export enum AttributeForParse {
+  STREET = 1,
+  PARTY = 2,
+  CUTE = 3,
+  COOL = 4,
+  ELEGANT = 5,
+}
+
+@ObjectType()
+export class Card {
+  @Field()
+  id: number;
+
+  rarityPrimaryKey?: number;
+  @Field({ nullable: false })
+  rarity?: number;
+
   @Field()
   cardName: string;
-  @Field()
-  attributePrimaryKey: number;
-  @Field()
-  characterPrimaryKey: number;
-  @Field()
-  skillParameterPrimaryKey: number;
+
+  attributePrimaryKey?: number;
+  @Field({ nullable: false })
+  attrubute?: Attribute;
+
+  characterPrimaryKey?: number;
+  @Field({ nullable: false })
+  character?: Character;
+
+  skillParameterPrimaryKey?: number;
+  @Field({ nullable: false })
+  skill: Skill;
+
   @Field()
   skillName: string;
   @Field((type) => [Number])
