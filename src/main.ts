@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -12,9 +13,8 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
   const reflector = app.get(Reflector);
-
   app.useGlobalGuards(new AuthGuard(reflector));
-
+  app.useGlobalPipes(new ValidationPipe())
   await app.listen(3000);
 }
 bootstrap();

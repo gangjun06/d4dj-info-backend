@@ -37,7 +37,7 @@ model Unit {
   subColorCode         String
   shortName            String
   initDeckCharacterIds Int[]
-  Characters           Character[]
+  characters           Character[]
 }
 
 model Character {
@@ -49,8 +49,8 @@ model Character {
   fullNameEnglish  String
   colorCode        String
 
-  Unit Unit   @relation(fields: [unitPrimaryKey], references: [id])
-  Card Card[]
+  unit Unit   @relation(fields: [unitPrimaryKey], references: [id])
+  card Card[]
 }
 
 enum Attribute {
@@ -70,7 +70,7 @@ model Skill {
   minSeconds         Float
   maxSeconds         Float
   perfectScoreUpRate Int
-  Card               Card[]
+  card               Card[]
 }
 
 model Card {

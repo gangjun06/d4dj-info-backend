@@ -80,8 +80,9 @@ type Resource {
 
 type Query {
   me: User!
-  unit: [Unit!]!
+  unit(page: PaginationInput, filter: UnitFilterInput): [Unit!]!
   character(page: PaginationInput, filter: CharacterFilterInput): [Character!]!
+  card(page: PaginationInput, filter: CardFilterInput): [Card!]!
 }
 
 input PaginationInput {
@@ -89,8 +90,17 @@ input PaginationInput {
   take: Float = 20
 }
 
+input UnitFilterInput {
+  id: Float = -1
+}
+
 input CharacterFilterInput {
   id: Float = -1
+}
+
+input CardFilterInput {
+  id: Float = -1
+  attribute: String
 }
 
 type Mutation {

@@ -47,15 +47,12 @@ export class Unit {
     },
     parseChild?: boolean,
   ): Unit {
-    const characters: Character[] = [];
-    if (parseChild) {
-      data.Characters.forEach((item) => {
-        characters.push(Character.gqlSchema(item));
-      });
-    }
     return {
       ...data,
-      characters,
+      characters:
+        parseChild && data.Characters
+          ? data.Characters.map((item) => Character.gqlSchema(item))
+          : null,
     };
   }
 }
@@ -101,12 +98,11 @@ export class Character {
   ): Character {
     return {
       ...data,
-      unit: parseChild ? Unit.gqlSchema(data.Unit) : null,
-      card: parseChild
-        ? data.Card.map((item) => {
-            return Card.gqlSchema(item);
-          })
-        : null,
+      unit: parseChild && data.Unit ? Unit.gqlSchema(data.Unit) : null,
+      card:
+        parseChild && data.Card
+          ? data.Card.map((item) => Card.gqlSchema(item))
+          : null,
     };
   }
 }
@@ -225,8 +221,9 @@ export class Card {
     return {
       ...data,
       attrubute: data.attribute,
-      skill: parseChild ? Skill.gqlSchema(data.Skill) : null,
-      character: parseChild ? Character.gqlSchema(data.Character) : null,
+      skill: parseChild && data.Skill ? Skill.gqlSchema(data.Skill) : null,
+      character:
+        parseChild && data.Skill ? Character.gqlSchema(data.Character) : null,
     };
   }
 }
