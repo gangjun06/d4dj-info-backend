@@ -4,28 +4,42 @@ import { Inject } from '@nestjs/common';
 import { Resolver, Query, Args, InputType, Field } from '@nestjs/graphql';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Attribute } from '@prisma/client';
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsOptional,
+  Max,
+  Min,
+} from 'class-validator';
 import { Card, Character, Unit } from './character';
 import { CharacterService } from './character.service';
 
 @InputType()
-export class UnitFilterInput {
-  @Field({ defaultValue: -1 })
-  id?: number;
-}
-
-@InputType()
 export class CharacterFilterInput {
-  @Field({ defaultValue: -1 })
-  id?: number;
+  @Field({ nullable: true })
+  @IsOptional()
+  @Min(0)
+  @Max(100)
+  unit?: number;
 }
 
 @InputType()
 export class CardFilterInput {
-  @Field({ defaultValue: -1 })
-  id?: number;
-
-  @Field({ nullable: true })
+  @Field((type) => Attribute, { nullable: true })
+  @IsOptional()
   attribute?: Attribute;
+
+  @Field((type) => [Number], { nullable: true })
+  @IsOptional()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(4)
+  rairity?: number[];
+
+  @Field((type) => [Number], { nullable: true })
+  @IsOptional()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(10)
+  unit?: number[];
 }
 
 @Resolver('character')
@@ -36,11 +50,10 @@ export class CharacterResolver {
 
   @Query(() => [Unit])
   async unit(
-    @Args('filter', { nullable: true }) filter: UnitFilterInput,
     @Args('page', { nullable: true }) page: PaginationInput,
     @Fields() fields: object,
   ) {
-    return this.characterService.getUnit(filter.id, page, {
+    return this.characterService.getUnit(page, {
       characters: 'characters' in fields,
     });
   }
@@ -51,7 +64,7 @@ export class CharacterResolver {
     @Args('page', { nullable: true }) page: PaginationInput,
     @Fields() fields: object,
   ) {
-    return this.characterService.getCharacter(filter.id, page, {
+    return this.characterService.getCharacter(page, {
       card: 'card' in fields,
       unit: 'unit' in fields,
     });
@@ -59,11 +72,22 @@ export class CharacterResolver {
   @Query(() => [Card])
   async card(
     @Args('filter', { nullable: true }) filter: CardFilterInput,
-    @Args('page', { nullable: true }) page: PaginationInput,
+    @Args('page', { nullable: true, defaultValue: { take: 20, skip: 0 } })
+    page: PaginationInput,
     @Fields() fields: object,
   ) {
-    return this.characterService.getCard(filter.id, page, {
-      character: 'character' in fields,
+    //@ts-ignore
+    return this.characterService.getCard(filter, page, {
+      ...('character' in fields
+        ? {
+            character: {
+              include: {
+                //@ts-ignore
+                unit: 'unit' in fields.character.fieldsByTypeName.Character,
+              },
+            },
+          }
+        : {}),
       skill: 'skilll' in fields,
     });
   }

@@ -31,28 +31,26 @@ export class Unit {
   static prismaSchema(data: Unit): PrismaUnit {
     return {
       id: data.id,
+      name: data.name,
       canTraining: data.canTraining,
-      initDeckCharacterIds: data.initDeckCharacterIds,
-      mainColorCode: data.mainColorCode,
-      name: data.mainColorCode,
-      shortName: data.shortName,
-      subColorCode: data.shortName,
       summary: data.summary,
+      mainColorCode: data.mainColorCode,
+      subColorCode: data.shortName,
+      shortName: data.shortName,
+      initDeckCharacterIds: data.initDeckCharacterIds,
     };
   }
 
   static gqlSchema(
     data: PrismaUnit & {
-      Characters?: PrismaCharacter[];
+      characters?: PrismaCharacter[];
     },
-    parseChild?: boolean,
   ): Unit {
     return {
       ...data,
-      characters:
-        parseChild && data.Characters
-          ? data.Characters.map((item) => Character.gqlSchema(item))
-          : null,
+      characters: data.characters
+        ? data.characters.map((item) => Character.gqlSchema(item))
+        : null,
     };
   }
 }
@@ -93,16 +91,12 @@ export class Character {
   }
 
   static gqlSchema(
-    data: PrismaCharacter & { Unit?: PrismaUnit; Card?: PrismaCard[] },
-    parseChild?: boolean,
+    data: PrismaCharacter & { unit?: PrismaUnit; card?: PrismaCard[] },
   ): Character {
     return {
       ...data,
-      unit: parseChild && data.Unit ? Unit.gqlSchema(data.Unit) : null,
-      card:
-        parseChild && data.Card
-          ? data.Card.map((item) => Card.gqlSchema(item))
-          : null,
+      unit: data.unit ? Unit.gqlSchema(data.unit) : null,
+      card: data.card ? data.card.map((item) => Card.gqlSchema(item)) : null,
     };
   }
 }
@@ -215,15 +209,13 @@ export class Card {
   }
 
   static gqlSchema(
-    data: PrismaCard & { Character?: PrismaCharacter; Skill?: PrismaSkill },
-    parseChild?: boolean,
+    data: PrismaCard & { character?: PrismaCharacter; skill?: PrismaSkill },
   ): Card {
     return {
       ...data,
       attrubute: data.attribute,
-      skill: parseChild && data.Skill ? Skill.gqlSchema(data.Skill) : null,
-      character:
-        parseChild && data.Skill ? Character.gqlSchema(data.Character) : null,
+      skill: data.skill ? Skill.gqlSchema(data.skill) : null,
+      character: data.character ? Character.gqlSchema(data.character) : null,
     };
   }
 }

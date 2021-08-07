@@ -80,9 +80,9 @@ type Resource {
 
 type Query {
   me: User!
-  unit(page: PaginationInput, filter: UnitFilterInput): [Unit!]!
+  unit(page: PaginationInput): [Unit!]!
   character(page: PaginationInput, filter: CharacterFilterInput): [Character!]!
-  card(page: PaginationInput, filter: CardFilterInput): [Card!]!
+  card(page: PaginationInput = {skip: 0, take: 20}, filter: CardFilterInput): [Card!]!
 }
 
 input PaginationInput {
@@ -90,17 +90,22 @@ input PaginationInput {
   take: Float = 20
 }
 
-input UnitFilterInput {
-  id: Float = -1
-}
-
 input CharacterFilterInput {
-  id: Float = -1
+  unit: Float
 }
 
 input CardFilterInput {
-  id: Float = -1
-  attribute: String
+  attribute: attribute
+  rairity: [Float!]
+  unit: [Float!]
+}
+
+enum attribute {
+  STREET
+  PARTY
+  CUTE
+  COOL
+  ELEGANT
 }
 
 type Mutation {

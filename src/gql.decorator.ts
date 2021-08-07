@@ -15,6 +15,6 @@ export const Fields = createParamDecorator(
       parsedInfo,
       info.returnType,
     );
-    return fields
+    return fields;
   },
 );
