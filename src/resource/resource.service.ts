@@ -49,9 +49,7 @@ export class ResourceService {
         let insertData: Prisma.SkillCreateManyInput[] = [];
 
         result.forEach((item) => {
-          insertData.push({
-            ...item,
-          });
+          insertData.push(Skill.prismaSchema(item));
         });
 
         await this.prismaService.skill.createMany({
@@ -67,9 +65,7 @@ export class ResourceService {
         let insertData: Prisma.UnitCreateManyInput[] = [];
 
         result.forEach((item) => {
-          insertData.push({
-            ...item,
-          });
+          insertData.push(Unit.prismaSchema(item));
         });
 
         await this.prismaService.unit.createMany({
@@ -85,15 +81,7 @@ export class ResourceService {
         let insertData: Prisma.CharacterCreateManyInput[] = [];
 
         result.forEach((item) => {
-          insertData.push({
-            id: item.id,
-            colorCode: item.colorCode,
-            firstName: item.firstName,
-            firstNameEnglish: item.firstNameEnglish,
-            fullName: item.fullName,
-            fullNameEnglish: item.fullNameEnglish,
-            unitPrimaryKey: item.unitPrimaryKey,
-          });
+          insertData.push(Character.prismaSchema(item));
         });
         await this.prismaService.character.createMany({
           data: insertData,
@@ -108,25 +96,7 @@ export class ResourceService {
         let insertData: Prisma.CardCreateManyInput[] = [];
 
         result.forEach((item) => {
-          const attribute: Attribute =
-            Attribute[AttributeForParse[item.attributePrimaryKey]];
-          insertData.push({
-            id: item.id,
-            attribute,
-            cardName: item.cardName,
-            characterPrimaryKey: item.characterPrimaryKey,
-            clothCardId: item.clothCardId,
-            debutOrder: item.debutOrder,
-            gachaMessage: item.gachaMessage,
-            rarity: item.rarityPrimaryKey,
-            skillName: item.skillName,
-            skillParameterPrimaryKey: item.skillParameterPrimaryKey,
-            cardIllustCenterDistanceX: item.cardIllustCenterDistanceX,
-            cardIllustHeadDistanceY: item.cardIllustHeadDistanceY,
-            startDate: item.startDate,
-            endDate: item.endDate,
-            maxParameters: item.maxParameters,
-          });
+          insertData.push(Card.prismaSchema(item));
         });
         await this.prismaService.card.createMany({
           data: insertData,

@@ -21,14 +21,26 @@ type UserWithToken {
   token: String!
 }
 
+type Unit {
+  id: Float!
+  name: String!
+  canTraining: Boolean!
+  summary: String!
+  mainColorCode: String!
+  subColorCode: String!
+  shortName: String!
+  characters: [Character!]
+}
+
 type Character {
   id: Float!
   fullName: String!
   firstName: String!
   firstNameEnglish: String!
-  unitPrimaryKey: Float!
+  unit: Unit
   fullNameEnglish: String!
   colorCode: String!
+  card: [Card!]
 }
 
 type Skill {
@@ -42,6 +54,24 @@ type Skill {
   perfectScoreUpRate: Float!
 }
 
+type Card {
+  id: Float!
+  rarity: Float!
+  cardName: String!
+  attrubute: String!
+  character: Character!
+  skill: Skill!
+  skillName: String!
+  maxParameters: [Float!]!
+  gachaMessage: String!
+  clothCardId: Float!
+  debutOrder: Float!
+  cardIllustHeadDistanceY: [Float!]!
+  cardIllustCenterDistanceX: [Float!]!
+  startDate: Timestamp!
+  endDate: Timestamp!
+}
+
 type Resource {
   name: String!
   lastUpdate: Timestamp!
@@ -50,6 +80,17 @@ type Resource {
 
 type Query {
   me: User!
+  unit: [Unit!]!
+  character(page: PaginationInput, filter: CharacterFilterInput): [Character!]!
+}
+
+input PaginationInput {
+  skip: Float = 0
+  take: Float = 20
+}
+
+input CharacterFilterInput {
+  id: Float = -1
 }
 
 type Mutation {

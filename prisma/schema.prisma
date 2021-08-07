@@ -49,7 +49,7 @@ model Character {
   fullNameEnglish  String
   colorCode        String
 
-  unit Unit   @relation(fields: [unitPrimaryKey], references: [id])
+  Unit Unit   @relation(fields: [unitPrimaryKey], references: [id])
   Card Card[]
 }
 
