@@ -3,7 +3,7 @@ import { PaginationInput } from '@/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Card, Character, Unit } from './character';
-import { CardFilterInput } from './character.resolver';
+import { CardFilterInput, CardOrderInput } from './character.resolver';
 
 @Injectable()
 export class CharacterService {
@@ -41,6 +41,7 @@ export class CharacterService {
   }
   async getCard(
     filter: CardFilterInput,
+    orderBy: CardOrderInput,
     { take, skip }: PaginationInput,
     include: Prisma.CardInclude,
   ): Promise<Card[]> {
@@ -66,6 +67,7 @@ export class CharacterService {
           {},
         ],
       },
+      orderBy,
       include,
     });
     let result: Card[] = [];

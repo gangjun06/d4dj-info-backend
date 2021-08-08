@@ -3,7 +3,7 @@ import { PaginationInput } from '@/types';
 import { Inject } from '@nestjs/common';
 import { Resolver, Query, Args, InputType, Field } from '@nestjs/graphql';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { Attribute } from '@prisma/client';
+import { Attribute, Prisma } from '@prisma/client';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -41,6 +41,16 @@ export class CardFilterInput {
   @ArrayMaxSize(10)
   unit?: number[];
 }
+@InputType()
+export class CardOrderInput {
+  @Field((type) => Prisma.SortOrder, { nullable: true })
+  @IsOptional()
+  id?: Prisma.SortOrder;
+
+  @Field((type) => Prisma.SortOrder, { nullable: true })
+  @IsOptional()
+  name?: Prisma.SortOrder;
+}
 
 @Resolver('character')
 export class CharacterResolver {
@@ -72,12 +82,12 @@ export class CharacterResolver {
   @Query(() => [Card])
   async card(
     @Args('filter', { nullable: true }) filter: CardFilterInput,
+    @Args('order', { nullable: true }) order: CardOrderInput,
     @Args('page', { nullable: true, defaultValue: { take: 20, skip: 0 } })
     page: PaginationInput,
     @Fields() fields: object,
   ) {
-    //@ts-ignore
-    return this.characterService.getCard(filter, page, {
+    return this.characterService.getCard(filter, order, page, {
       ...('character' in fields
         ? {
             character: {
