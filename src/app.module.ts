@@ -22,6 +22,7 @@ import { CharacterModule } from './character/character.module';
         MAILGUN_APIKEY: Joi.string().required(),
         MAILGUN_DOMAIN: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
+        BASE_FILE_URL: Joi.string().uri().required(),
       }),
     }),
     GraphQLModule.forRoot({

@@ -14,7 +14,7 @@ async function bootstrap() {
   );
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new AuthGuard(reflector));
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 bootstrap();

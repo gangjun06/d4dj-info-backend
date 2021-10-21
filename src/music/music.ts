@@ -1,5 +1,6 @@
 import { ResourceType } from '@/resource/resource';
 import { Field, ObjectType } from '@nestjs/graphql';
+// import { Music as PrismaMusic } from '@prisma/client';
 
 @ObjectType()
 export class Music {
@@ -43,4 +44,40 @@ export class Music {
   excludeChallenge: boolean;
   @Field()
   isTutorial: boolean;
+
+  // static prismaSchema(data: Music): Prisma;
+}
+
+export class Chart {
+  id: number;
+  musicPrimaryKey: number;
+  difficulty: string;
+  level: number;
+  achieveId: number;
+  trends: number[];
+  overrideLevel: string;
+  designerPrimaryKey: number;
+}
+
+export class ChartDesigner {
+  id: number;
+  name: string;
+}
+
+export class MusicMix {
+  musicPrimaryKey: number;
+  section: string; // enum
+  startTime: number;
+  startTimeBpm: number;
+  endTime: number;
+  endTimeBpm: number;
+  enableLongMixStart: boolean;
+  enableLongMixEnd: boolean;
+}
+
+export class ChartNoteCount {
+  id: number;
+  chartId: number;
+  section: string; // enum
+  count: number;
 }

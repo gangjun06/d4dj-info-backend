@@ -1,4 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, registerEnumType } from '@nestjs/graphql';
+import { Prisma } from '@prisma/client';
 import { IsOptional, Min } from 'class-validator';
 
 @InputType()
@@ -13,3 +14,5 @@ export class PaginationInput {
   @Min(0)
   take: number;
 }
+
+registerEnumType(Prisma.SortOrder, { name: 'SortOrder' });

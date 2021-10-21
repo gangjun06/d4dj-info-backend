@@ -1,10 +1,11 @@
 import { Auth } from '@/user/user.decorator';
-import { Inject, Query } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import {
   Args,
   Field,
   InputType,
   Mutation,
+  Query,
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
@@ -22,7 +23,7 @@ export class ResourceResolver {
   constructor(
     @Inject(ResourceService) private resourceService: ResourceService,
   ) {}
-  @ResolveField((returns) => [Resource])
+  @Query((returns) => [Resource])
   @Auth({ onlyAdmin: true })
   async resources() {}
 

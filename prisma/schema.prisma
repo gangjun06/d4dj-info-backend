@@ -38,6 +38,7 @@ model Unit {
   shortName            String
   initDeckCharacterIds Int[]
   characters           Character[]
+  Music                Music[]
 }
 
 model Character {
@@ -92,4 +93,98 @@ model Card {
 
   character Character @relation(fields: [characterPrimaryKey], references: [id])
   skill     Skill     @relation(fields: [skillParameterPrimaryKey], references: [id])
+}
+
+enum MusicCategory {
+  Instrumental
+  Original
+  Cover
+  Game
+  Collabo
+}
+
+model Music {
+  id               Int           @id
+  name             String
+  readName         String
+  lyrist           String
+  composer         String
+  arranger         String
+  specialUnitName  String
+  category         MusicCategory
+  unitPrimaryKey   Int
+  defaultOrder     Int
+  musicBpm         Int
+  openKey          Int
+  sectionTrend     String
+  startDate        String
+  endDate          String
+  hasMovie         Boolean
+  // purchaseBonusesPrimaryKey any[]
+  isHidden         Boolean
+  excludeChallenge Boolean
+  isTutorial       Boolean
+  // static prismaSchema(data Music): Prisma
+
+  unit     Unit       @relation(fields: [unitPrimaryKey], references: [id])
+  chart    Chart[]
+  musicMix MusicMix[]
+}
+
+enum ChartDifficulty {
+  Easy
+  Normal
+  Hard
+  Expert
+}
+
+model Chart {
+  id                 Int             @id
+  musicPrimaryKey    Int
+  difficulty         ChartDifficulty
+  level              Float
+  achieveId          Int
+  trends             Float[]
+  overrideLevel      String
+  designerPrimaryKey Int
+
+  music          Music            @relation(fields: [musicPrimaryKey], references: [id])
+  chartDesigner  ChartDesigner    @relation(fields: [designerPrimaryKey], references: [id])
+  ChartNoteCount ChartNoteCount[]
+}
+
+model ChartDesigner {
+  id    Int     @id
+  name  String
+  Chart Chart[]
+}
+
+enum MusicSection {
+  Full
+  Begin
+  Middle
+  End
+}
+
+model MusicMix {
+  id                 Int          @id @default(autoincrement())
+  musicPrimaryKey    Int
+  section            MusicSection
+  startTime          Float
+  startTimeBpm       Int
+  endTime            Float
+  endTimeBpm         Int
+  enableLongMixStart Boolean
+  enableLongMixEnd   Boolean
+
+  music Music @relation(fields: [musicPrimaryKey], references: [id])
+}
+
+model ChartNoteCount {
+  id      Int          @id @default(autoincrement())
+  chartId Int
+  section MusicSection
+  count   Int
+
+  chart Chart @relation(fields: [chartId], references: [id])
 }

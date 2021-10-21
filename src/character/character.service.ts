@@ -45,7 +45,6 @@ export class CharacterService {
     { take, skip }: PaginationInput,
     include: Prisma.CardInclude,
   ): Promise<Card[]> {
-    console.log(include);
     const card = await this.prismaService.card.findMany({
       take,
       skip,

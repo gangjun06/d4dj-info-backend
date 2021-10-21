@@ -8,13 +8,17 @@ import {
 import { Music } from '@/music/music';
 import { PrismaService } from '@/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Attribute, Prisma } from '@prisma/client';
 import axios from 'axios';
 import { Resource, ResourceType } from './resource';
 
 @Injectable()
 export class ResourceService {
-  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+  constructor(
+    @Inject(PrismaService) private prismaService: PrismaService,
+    private readonly configService: ConfigService,
+  ) {}
 
   // ex) StartDate -> startDate
   private formatText(str: string): string {
@@ -35,16 +39,15 @@ export class ResourceService {
   }
 
   async getResources(target: ResourceType): Promise<void> {
+    const baseUrl = this.configService.get<string>('BASE_FILE_URL') + 'Master';
     if (target === ResourceType.Music) {
-      const res = await axios.get(
-        'https://api.d4dj.info/api/file/download?path=Master/MusicMaster.json',
-      );
-      const result = this.parse<Music>(res.data);
+      {
+        const res = await axios.get(`${baseUrl}/MusicMaster.json`);
+        const result = this.parse<Music>(res.data);
+      }
     } else if (target === ResourceType.Character) {
       {
-        const res = await axios.get(
-          'https://api.d4dj.info/api/file/download?path=Master/SkillMaster.json',
-        );
+        const res = await axios.get(`${baseUrl}/SkillMaster.json`);
         const result = this.parse<Skill>(res.data);
         let insertData: Prisma.SkillCreateManyInput[] = [];
 
@@ -58,9 +61,7 @@ export class ResourceService {
         });
       }
       {
-        const res = await axios.get(
-          'https://api.d4dj.info/api/file/download?path=Master/UnitMaster.json',
-        );
+        const res = await axios.get(`${baseUrl}/UnitMaster.json`);
         const result = this.parse<Unit>(res.data);
         let insertData: Prisma.UnitCreateManyInput[] = [];
 
@@ -74,9 +75,7 @@ export class ResourceService {
         });
       }
       {
-        const res = await axios.get(
-          'https://api.d4dj.info/api/file/download?path=Master/CharacterMaster.json',
-        );
+        const res = await axios.get(`${baseUrl}/CharacterMaster.json`);
         const result = this.parse<Character>(res.data);
         let insertData: Prisma.CharacterCreateManyInput[] = [];
 
@@ -89,9 +88,7 @@ export class ResourceService {
         });
       }
       {
-        const res = await axios.get(
-          'https://api.d4dj.info/api/file/download?path=Master/CardMaster.json',
-        );
+        const res = await axios.get(`${baseUrl}/CardMaster.json`);
         const result = this.parse<Card>(res.data);
         let insertData: Prisma.CardCreateManyInput[] = [];
 

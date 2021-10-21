@@ -75,14 +75,15 @@ type Card {
 type Resource {
   name: String!
   lastUpdate: Timestamp!
-  resources: [Resource!]!
 }
 
 type Query {
   me: User!
+  resources: [Resource!]!
+  test: String!
   unit(page: PaginationInput): [Unit!]!
   character(page: PaginationInput, filter: CharacterFilterInput): [Character!]!
-  card(page: PaginationInput = {skip: 0, take: 20}, filter: CardFilterInput): [Card!]!
+  card(page: PaginationInput = {skip: 0, take: 20}, order: CardOrderInput, filter: CardFilterInput): [Card!]!
 }
 
 input PaginationInput {
@@ -92,6 +93,16 @@ input PaginationInput {
 
 input CharacterFilterInput {
   unit: Float
+}
+
+input CardOrderInput {
+  id: SortOrder
+  name: SortOrder
+}
+
+enum SortOrder {
+  asc
+  desc
 }
 
 input CardFilterInput {
