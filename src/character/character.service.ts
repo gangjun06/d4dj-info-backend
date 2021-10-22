@@ -1,9 +1,9 @@
 import { PrismaService } from '@/prisma.service';
-import { PaginationInput } from '@/types';
+import { DefaultSortInput, PaginationInput } from '@/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Card, Character, Unit } from './character';
-import { CardFilterInput, CardOrderInput } from './character.resolver';
+import { CardFilterInput, CardSort } from './character.resolver';
 
 @Injectable()
 export class CharacterService {
@@ -41,7 +41,7 @@ export class CharacterService {
   }
   async getCard(
     filter: CardFilterInput,
-    orderBy: CardOrderInput,
+    orderBy: DefaultSortInput<typeof CardSort>,
     { take, skip }: PaginationInput,
     include: Prisma.CardInclude,
   ): Promise<Card[]> {
@@ -66,7 +66,8 @@ export class CharacterService {
           {},
         ],
       },
-      orderBy,
+      // ...(orderBy && { [String(orderBy.name)]: orderBy.order }),
+
       include,
     });
     let result: Card[] = [];

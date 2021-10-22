@@ -1,7 +1,14 @@
 import { Fields } from '@/gql.decorator';
-import { PaginationInput } from '@/types';
+import { DefaultSortInput, PaginationInput } from '@/types';
 import { Inject } from '@nestjs/common';
-import { Resolver, Query, Args, InputType, Field } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  InputType,
+  Field,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Attribute, Prisma } from '@prisma/client';
 import {
@@ -38,19 +45,15 @@ export class CardFilterInput {
   @Field((type) => [Number], { nullable: true })
   @IsOptional()
   @ArrayMinSize(1)
-  @ArrayMaxSize(10)
+  @ArrayMaxSize(100)
   unit?: number[];
 }
-@InputType()
-export class CardOrderInput {
-  @Field((type) => Prisma.SortOrder, { nullable: true })
-  @IsOptional()
-  id?: Prisma.SortOrder;
 
-  @Field((type) => Prisma.SortOrder, { nullable: true })
-  @IsOptional()
-  name?: Prisma.SortOrder;
+export enum CardSort {
+  id,
+  name,
 }
+registerEnumType(CardSort, { name: 'cardSort' });
 
 @Resolver('character')
 export class CharacterResolver {
@@ -58,7 +61,7 @@ export class CharacterResolver {
     @Inject(CharacterService) private characterService: CharacterService,
   ) {}
 
-  @Query(() => [Unit])
+  @Query((returns) => [Unit])
   async unit(
     @Args('page', { nullable: true }) page: PaginationInput,
     @Fields() fields: object,
@@ -79,10 +82,12 @@ export class CharacterResolver {
       unit: 'unit' in fields,
     });
   }
+
   @Query(() => [Card])
   async card(
     @Args('filter', { nullable: true }) filter: CardFilterInput,
-    @Args('order', { nullable: true }) order: CardOrderInput,
+    @Args('sort', { type: () => DefaultSortInput, nullable: true })
+    order: DefaultSortInput<typeof CardSort>,
     @Args('page', { nullable: true, defaultValue: { take: 20, skip: 0 } })
     page: PaginationInput,
     @Fields() fields: object,

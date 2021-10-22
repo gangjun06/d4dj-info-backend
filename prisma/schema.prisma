@@ -114,7 +114,7 @@ model Music {
   category         MusicCategory
   unitPrimaryKey   Int
   defaultOrder     Int
-  musicBpm         Int
+  musicBpm         Float
   openKey          Int
   sectionTrend     String
   startDate        String
@@ -124,6 +124,7 @@ model Music {
   isHidden         Boolean
   excludeChallenge Boolean
   isTutorial       Boolean
+  canFairUse       Boolean
   // static prismaSchema(data Music): Prisma
 
   unit     Unit       @relation(fields: [unitPrimaryKey], references: [id])
@@ -148,9 +149,8 @@ model Chart {
   overrideLevel      String
   designerPrimaryKey Int
 
-  music          Music            @relation(fields: [musicPrimaryKey], references: [id])
-  chartDesigner  ChartDesigner    @relation(fields: [designerPrimaryKey], references: [id])
-  ChartNoteCount ChartNoteCount[]
+  music         Music         @relation(fields: [musicPrimaryKey], references: [id])
+  chartDesigner ChartDesigner @relation(fields: [designerPrimaryKey], references: [id])
 }
 
 model ChartDesigner {
@@ -164,6 +164,7 @@ enum MusicSection {
   Begin
   Middle
   End
+  DJSimulator
 }
 
 model MusicMix {
@@ -171,9 +172,9 @@ model MusicMix {
   musicPrimaryKey    Int
   section            MusicSection
   startTime          Float
-  startTimeBpm       Int
+  startTimeBpm       Float
   endTime            Float
-  endTimeBpm         Int
+  endTimeBpm         Float
   enableLongMixStart Boolean
   enableLongMixEnd   Boolean
 
@@ -185,6 +186,4 @@ model ChartNoteCount {
   chartId Int
   section MusicSection
   count   Int
-
-  chart Chart @relation(fields: [chartId], references: [id])
 }

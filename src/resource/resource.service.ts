@@ -5,11 +5,17 @@ import {
   Skill,
   Unit,
 } from '@/character/character';
-import { Music } from '@/music/music';
+import {
+  Chart,
+  ChartDesigner,
+  ChartNoteCount,
+  Music,
+  MusicMix,
+} from '@/music/music';
 import { PrismaService } from '@/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Attribute, Prisma } from '@prisma/client';
+import prisma, { Attribute, Prisma } from '@prisma/client';
 import axios from 'axios';
 import { Resource, ResourceType } from './resource';
 
@@ -42,8 +48,51 @@ export class ResourceService {
     const baseUrl = this.configService.get<string>('BASE_FILE_URL') + 'Master';
     if (target === ResourceType.Music) {
       {
+        const res = await axios.get(`${baseUrl}/ChartDesignerMaster.json`);
+        const result = this.parse<ChartDesigner>(res.data);
+
+        await this.prismaService.chartDesigner.createMany({
+          data: result.map<prisma.ChartDesigner>((item) =>
+            ChartDesigner.prismaSchema(item),
+          ),
+          skipDuplicates: true,
+        });
+      }
+      {
         const res = await axios.get(`${baseUrl}/MusicMaster.json`);
         const result = this.parse<Music>(res.data);
+        await this.prismaService.music.createMany({
+          data: result.map<prisma.Music>((item) => Music.prismaSchema(item)),
+          skipDuplicates: true,
+        });
+      }
+      {
+        const res = await axios.get(`${baseUrl}/MusicMixMaster.json`);
+        const result = this.parse<MusicMix>(res.data);
+        await this.prismaService.musicMix.deleteMany({});
+        await this.prismaService.musicMix.createMany({
+          data: result.map<prisma.MusicMix>((item) =>
+            MusicMix.prismaSchema(item),
+          ),
+        });
+      }
+      {
+        const res = await axios.get(`${baseUrl}/ChartMaster.json`);
+        const result = this.parse<Chart>(res.data);
+        await this.prismaService.chart.createMany({
+          data: result.map<prisma.Chart>((item) => Chart.prismaSchema(item)),
+          skipDuplicates: true,
+        });
+      }
+      {
+        const res = await axios.get(`${baseUrl}/ChartNoteCountMaster.json`);
+        const result = this.parse<ChartNoteCount>(res.data);
+        await this.prismaService.musicMix.deleteMany({});
+        await this.prismaService.chartNoteCount.createMany({
+          data: result.map<prisma.ChartNoteCount>((item) =>
+            ChartNoteCount.prismaSchema(item),
+          ),
+        });
       }
     } else if (target === ResourceType.Character) {
       {

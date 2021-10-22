@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Attribute, Prisma } from '@prisma/client';
+import { Attribute } from '@prisma/client';
 import {
   Card as PrismaCard,
   Unit as PrismaUnit,

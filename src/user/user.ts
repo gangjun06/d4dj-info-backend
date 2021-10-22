@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
 
 @ObjectType()

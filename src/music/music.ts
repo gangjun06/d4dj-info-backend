@@ -1,11 +1,32 @@
+import { Unit } from '@/character/character';
 import { ResourceType } from '@/resource/resource';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import prisma from '@prisma/client';
-import { Prisma } from '@prisma/client';
+import { MusicSection, MusicCategory } from '@prisma/client';
 // import { Music as PrismaMusic } from '@prisma/client';
 
-registerEnumType(prisma.MusicSection, { name: 'musicSection' });
-registerEnumType(prisma.MusicCategory, { name: 'musicCategory' });
+registerEnumType(MusicSection, { name: 'MusicSection' });
+registerEnumType(MusicCategory, { name: 'MusicCategory' });
+
+@ObjectType()
+export class ChartDesigner {
+  @Field()
+  id: number;
+  @Field()
+  name: string;
+
+  static prismaSchema(data: ChartDesigner): prisma.ChartDesigner {
+    return {
+      ...data,
+    };
+  }
+
+  static gqlSchema(data: prisma.ChartDesigner): ChartDesigner {
+    return {
+      ...data,
+    };
+  }
+}
 
 @ObjectType()
 export class Music {
@@ -24,7 +45,7 @@ export class Music {
   @Field()
   specialUnitName: string;
   @Field()
-  category: string;
+  category: MusicCategory;
   @Field()
   unitPrimaryKey: number;
   @Field()
@@ -42,30 +63,35 @@ export class Music {
   @Field()
   hasMovie: boolean;
   // @Field((returns) => [Number])
-  // purchaseBonusesPrimaryKey: any[];
+  purchaseBonusesPrimaryKey?: any[];
   @Field()
   isHidden: boolean;
   @Field()
   excludeChallenge: boolean;
   @Field()
   isTutorial: boolean;
+  @Field()
+  canFairUse: boolean;
 
-  @Field({ nullable: true })
-  chart: Chart[];
+  @Field((type) => [Chart], { nullable: true })
+  chart?: Chart[];
 
-  @Field({ nullable: true })
-  musicMix: MusicMix[];
+  @Field((type) => [MusicMix], { nullable: true })
+  musicMix?: MusicMix[];
+
+  @Field((type) => [Unit], { nullable: true })
+  unit?: Unit[];
 
   static prismaSchema(data: Music): prisma.Music {
-    return {
-      ...(data as prisma.Music),
-    };
+    data.purchaseBonusesPrimaryKey = undefined;
+    return data as prisma.Music;
   }
 
   static gqlSchema(
     data: prisma.Music & {
       chart?: prisma.Chart[];
       musicMix?: prisma.MusicMix[];
+      unit?: prisma.Unit[];
     },
   ): Music {
     return {
@@ -76,6 +102,7 @@ export class Music {
       musicMix: data.musicMix
         ? data.musicMix.map((item) => MusicMix.gqlSchema(item))
         : null,
+      unit: data.unit ? data.unit.map((item) => Unit.gqlSchema(item)) : null,
     };
   }
 }
@@ -92,17 +119,21 @@ export class Chart {
   level: number;
   @Field()
   achieveId: number;
-  @Field()
+  @Field((type) => [Number])
   trends: number[];
   @Field()
   overrideLevel: string;
   @Field()
   designerPrimaryKey: number;
 
-  @Field({ nullable: true })
-  chartDesigner: ChartDesigner;
-  @Field({ nullable: true })
-  chartNoteCount: ChartNoteCount[];
+  @Field((type) => ChartDesigner, { nullable: true })
+  chartDesigner?: ChartDesigner;
+  @Field((type) => [ChartNoteCount], { nullable: true })
+  chartNoteCount?: ChartNoteCount[];
+
+  static prismaSchema(data: Chart): prisma.Chart {
+    return data as prisma.Chart;
+  }
 
   static gqlSchema(
     data: prisma.Chart & {
@@ -123,25 +154,12 @@ export class Chart {
 }
 
 @ObjectType()
-export class ChartDesigner {
-  @Field()
-  id: number;
-  @Field()
-  name: string;
-
-  static gqlSchema(data: prisma.ChartDesigner): ChartDesigner {
-    return {
-      ...data,
-    };
-  }
-}
-
 export class MusicMix {
   id: number;
   @Field()
   musicPrimaryKey: number;
   @Field()
-  section: prisma.MusicSection;
+  section: MusicSection;
   @Field()
   startTime: number;
   @Field()
@@ -155,11 +173,10 @@ export class MusicMix {
   @Field()
   enableLongMixEnd: boolean;
 
-  @Field({ nullable: true })
-  music: Music;
+  @Field((type) => Music, { nullable: true })
+  music?: Music;
 
   static prismaSchema(data: MusicMix): prisma.MusicMix {
-    data.music = undefined;
     return data as prisma.MusicMix;
   }
 
@@ -171,17 +188,18 @@ export class MusicMix {
   }
 }
 
+@ObjectType()
 export class ChartNoteCount {
   id: number;
   @Field()
   chartId: number;
   @Field()
-  section: prisma.MusicSection;
+  section: MusicSection;
   @Field()
   count: number;
 
-  @Field({ nullable: true })
-  chart: Chart;
+  @Field((type) => Chart, { nullable: true })
+  chart?: Chart;
 
   static prismaSchema(data: ChartNoteCount): prisma.ChartNoteCount {
     return { ...data };
