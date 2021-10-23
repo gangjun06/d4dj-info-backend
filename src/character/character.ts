@@ -23,22 +23,15 @@ export class Unit {
   subColorCode: string;
   @Field()
   shortName: string;
-
+  @Field((type) => [Number], { nullable: true })
   initDeckCharacterIds?: number[];
+
   @Field((type) => [Character], { nullable: true })
   characters?: Character[];
 
   static prismaSchema(data: Unit): PrismaUnit {
-    return {
-      id: data.id,
-      name: data.name,
-      canTraining: data.canTraining,
-      summary: data.summary,
-      mainColorCode: data.mainColorCode,
-      subColorCode: data.shortName,
-      shortName: data.shortName,
-      initDeckCharacterIds: data.initDeckCharacterIds,
-    };
+    data.characters = undefined;
+    return data as PrismaUnit;
   }
 
   static gqlSchema(
@@ -48,9 +41,9 @@ export class Unit {
   ): Unit {
     return {
       ...data,
-      characters: data.characters
-        ? data.characters.map((item) => Character.gqlSchema(item))
-        : null,
+      characters:
+        data.characters &&
+        data.characters.map((item) => Character.gqlSchema(item)),
     };
   }
 }
@@ -66,9 +59,8 @@ export class Character {
   @Field()
   firstNameEnglish: string;
 
-  unitPrimaryKey?: number;
-  @Field({ nullable: true })
-  unit?: Unit;
+  unitPrimaryKey: number;
+  profileAnswers?: any[];
 
   @Field()
   fullNameEnglish: string;
@@ -77,17 +69,14 @@ export class Character {
 
   @Field((type) => [Card], { nullable: true })
   card?: Card[];
+  @Field({ nullable: true })
+  unit?: Unit;
 
   static prismaSchema(data: Character): PrismaCharacter {
-    return {
-      id: data.id,
-      colorCode: data.colorCode,
-      firstName: data.firstName,
-      firstNameEnglish: data.firstNameEnglish,
-      fullName: data.fullName,
-      fullNameEnglish: data.fullNameEnglish,
-      unitPrimaryKey: data.unitPrimaryKey,
-    };
+    data.card = undefined;
+    data.unit = undefined;
+    data.profileAnswers = undefined;
+    return data;
   }
 
   static gqlSchema(
@@ -95,8 +84,8 @@ export class Character {
   ): Character {
     return {
       ...data,
-      unit: data.unit ? Unit.gqlSchema(data.unit) : null,
-      card: data.card ? data.card.map((item) => Card.gqlSchema(item)) : null,
+      unit: data.unit && Unit.gqlSchema(data.unit),
+      card: data.card && data.card.map((item) => Card.gqlSchema(item)),
     };
   }
 }
@@ -121,15 +110,11 @@ export class Skill {
   perfectScoreUpRate: number;
 
   static prismaSchema(data: Skill): PrismaSkill {
-    return {
-      ...data,
-    };
+    return data;
   }
 
   static gqlSchema(data: PrismaSkill): Skill {
-    return {
-      ...data,
-    };
+    return data;
   }
 }
 
@@ -157,7 +142,7 @@ export class Card {
 
   attributePrimaryKey?: number;
   @Field({ nullable: false })
-  attrubute?: Attribute;
+  attribute?: Attribute;
 
   characterPrimaryKey?: number;
   @Field({ nullable: false })
@@ -187,11 +172,9 @@ export class Card {
   endDate: Date;
 
   static prismaSchema(data: Card): PrismaCard {
-    const attribute: Attribute =
-      Attribute[AttributeForParse[data.attributePrimaryKey]];
     return {
       id: data.id,
-      attribute,
+      attribute: Attribute[AttributeForParse[data.attributePrimaryKey]],
       cardName: data.cardName,
       characterPrimaryKey: data.characterPrimaryKey,
       clothCardId: data.clothCardId,
@@ -213,9 +196,9 @@ export class Card {
   ): Card {
     return {
       ...data,
-      attrubute: data.attribute,
-      skill: data.skill ? Skill.gqlSchema(data.skill) : null,
-      character: data.character ? Character.gqlSchema(data.character) : null,
+      attribute: data.attribute,
+      skill: data.skill && Skill.gqlSchema(data.skill),
+      character: data.character && Character.gqlSchema(data.character),
     };
   }
 }
