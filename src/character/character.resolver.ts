@@ -1,5 +1,5 @@
 import { Fields } from '@/gql.decorator';
-import { DefaultSortInput, PaginationInput } from '@/types';
+import { PaginationInput } from '@/types';
 import { Inject } from '@nestjs/common';
 import {
   Resolver,
@@ -50,9 +50,19 @@ export class CardFilterInput {
 }
 
 export enum CardSort {
-  id,
-  name,
+  id = 'id',
+  name = 'name',
 }
+
+@InputType()
+export class CardSortInput {
+  @Field((type) => CardSort)
+  name: CardSort;
+
+  @Field((type) => Prisma.SortOrder, { nullable: true, defaultValue: 'asc' })
+  order?: Prisma.SortOrder;
+}
+
 registerEnumType(CardSort, { name: 'cardSort' });
 
 @Resolver('character')
@@ -86,8 +96,8 @@ export class CharacterResolver {
   @Query(() => [Card])
   async card(
     @Args('filter', { nullable: true }) filter: CardFilterInput,
-    @Args('sort', { type: () => DefaultSortInput, nullable: true })
-    order: DefaultSortInput<typeof CardSort>,
+    @Args('sort', { type: () => CardSortInput, nullable: true })
+    order: CardSortInput,
     @Args('page', { nullable: true, defaultValue: { take: 20, skip: 0 } })
     page: PaginationInput,
     @Fields() fields: object,
@@ -103,7 +113,7 @@ export class CharacterResolver {
             },
           }
         : {}),
-      skill: 'skilll' in fields,
+      skill: 'skill' in fields,
     });
   }
 }

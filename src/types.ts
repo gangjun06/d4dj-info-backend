@@ -25,13 +25,4 @@ export class PaginationInput {
 
 type enums = typeof CardSort;
 
-@InputType()
-export class DefaultSortInput<T extends enums> {
-  @Field((type) => String)
-  name: T;
-
-  @Field((type) => Prisma.SortOrder, { nullable: true, defaultValue: 'asc' })
-  order?: Prisma.SortOrder;
-}
-
 registerEnumType(Prisma.SortOrder, { name: 'SortOrder' });

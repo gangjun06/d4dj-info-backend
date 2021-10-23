@@ -33,13 +33,13 @@ export class MusicOrderInput {
 export class MusicResolver {
   constructor(@Inject(MusicService) private musicService: MusicService) {}
 
-  //   @Query(() => [Music])
-  //   async music(
-  //     @Args('page', { nullable: true }) page: PaginationInput,
-  //     @Args('filter', { nullable: true }) filter: MusicFilterInput,
-  //     @Args('order', { nullable: true }) order: MusicOrderInput,
-  //     @Fields() fields: object,
-  //   ) {
-  //     return [];
-  //   }
+  @Query(() => [Music])
+  async music(
+    @Args('page', { nullable: true }) page: PaginationInput,
+    @Args('filter', { nullable: true }) filter: MusicFilterInput,
+    @Args('order', { nullable: true }) order: MusicOrderInput,
+    @Fields() fields: object,
+  ) {
+    return [];
+  }
 }
