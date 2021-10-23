@@ -1,4 +1,4 @@
-import { Auth } from '@/user/user.decorator';
+import { Auth } from '@/auth/user.decorator';
 import { Inject } from '@nestjs/common';
 import {
   Args,

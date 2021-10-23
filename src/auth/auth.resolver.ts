@@ -18,10 +18,9 @@ import {
 } from '@nestjs/graphql';
 import { IsEmail, Length, MaxLength, MinLength } from 'class-validator';
 import { string } from 'joi';
-import { AuthGuard } from './auth.guard';
 import { User, UserWithToken } from './user';
 import { CurrentUser, Auth } from './user.decorator';
-import { UserService } from './user.service';
+import { AuthService } from './auth.service';
 
 @InputType()
 class UserSignUpInput {
@@ -58,8 +57,8 @@ class EmailVerifyInput {
 }
 
 @Resolver(User)
-export class UserResolver {
-  constructor(@Inject(UserService) private userService: UserService) {}
+export class AuthResolver {
+  constructor(@Inject(AuthService) private userService: AuthService) {}
 
   @Query((returns) => User)
   @Auth()
@@ -93,8 +92,8 @@ export class UserResolver {
   //   return this.userService.emailVerify(data.email, data.code);
   // }
 
-  @Mutation((returns) => UserWithToken)
-  async loginReq(@Args('data') data: LoginReqInput) {
-    return this.userService.login(data.email);
-  }
+  // @Mutation((returns) => null)
+  // async loginReq(@Args('data') data: LoginReqInput) {
+  //   return this.userService.login(data.email);
+  // }
 }

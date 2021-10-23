@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import * as Joi from 'joi';
-import { AuthGuard } from './user/auth.guard';
-import { RoleGuard } from './user/role.guard';
+import { RoleGuard } from './auth/role.guard';
 import { ResourceModule } from './resource/resource.module';
 import { PrismaService } from './prisma.service';
 import { MusicModule } from './music/music.module';
 import { CharacterModule } from './character/character.module';
+import { AppController } from './app.controller';
+import configuration from './configuration';
 
 @Module({
   imports: [
@@ -22,24 +23,25 @@ import { CharacterModule } from './character/character.module';
         JWT_SECRET: Joi.string().required(),
         BASE_FILE_URL: Joi.string().uri(),
         PORT: Joi.number(),
+        GOOGLE_CIENT_ID: Joi.string(),
+        GOOGLE_CIENT_SECRET: Joi.string(),
+        GOOGLE_CALLBACK_URL: Joi.string(),
       }),
+      load: [configuration],
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      // autoSchemaFile: true,
+      // autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: true,
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
+      path: '/graphql',
     }),
-    UserModule,
+    AuthModule,
     ResourceModule,
     MusicModule,
     CharacterModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
     {
       provide: APP_GUARD,
       useClass: RoleGuard,

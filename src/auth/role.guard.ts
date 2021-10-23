@@ -16,21 +16,21 @@ export class RoleGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const onlyAdmin = this.reflector.getAllAndOverride<boolean>('onlyAdmin', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    // const onlyAdmin = this.reflector.getAllAndOverride<boolean>('onlyAdmin', [
+    //   context.getHandler(),
+    //   context.getClass(),
+    // ]);
 
-    const ctx = GqlExecutionContext.create(context);
-    const user = ctx.getContext().req.user as User;
+    // const ctx = GqlExecutionContext.create(context);
+    // const user = ctx.getContext().req.user as User;
 
-    if (onlyAdmin && !user.isAdmin) {
-      throw new ForbiddenException({
-        statusCode: HttpStatus.FORBIDDEN,
-        message: ['FORBIDDEN'],
-        error: 'Forbidden',
-      });
-    }
+    // if (onlyAdmin && !user.isAdmin) {
+    //   throw new ForbiddenException({
+    //     statusCode: HttpStatus.FORBIDDEN,
+    //     message: ['FORBIDDEN'],
+    //     error: 'Forbidden',
+    //   });
+    // }
     return true;
   }
 }
