@@ -1,0 +1,229 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  name: String!
+  email: String!
+  emailVerified: Boolean!
+  isAdmin: Boolean!
+  createdAt: Timestamp!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type UserWithToken {
+  user: User!
+  token: String!
+}
+
+type Unit {
+  id: ID!
+  name: String!
+  canTraining: Boolean!
+  summary: String!
+  mainColorCode: String!
+  subColorCode: String!
+  shortName: String!
+  initDeckCharacterIds: [Float!]
+  characters: [Character!]
+}
+
+type Character {
+  id: ID!
+  fullName: String!
+  firstName: String!
+  firstNameEnglish: String!
+  fullNameEnglish: String!
+  colorCode: String!
+  card: [Card!]
+  unit: Unit
+}
+
+type Skill {
+  id: ID!
+  minRecoveryValue: Float!
+  maxRecoveryValue: Float!
+  comboSupportCount: Float!
+  scoreUpRate: Float!
+  minSeconds: Float!
+  maxSeconds: Float!
+  perfectScoreUpRate: Float!
+}
+
+type Card {
+  id: ID!
+  rarity: Float!
+  cardName: String!
+  attribute: String!
+  character: Character!
+  skill: Skill!
+  skillName: String!
+  maxParameters: [Float!]!
+  gachaMessage: String!
+  clothCardId: Float!
+  debutOrder: Float!
+  cardIllustHeadDistanceY: [Float!]!
+  cardIllustCenterDistanceX: [Float!]!
+  startDate: Timestamp!
+  endDate: Timestamp!
+}
+
+type Resource {
+  name: String!
+  lastUpdate: Timestamp!
+}
+
+type ChartDesigner {
+  id: Float!
+  name: String!
+}
+
+type Music {
+  id: Float!
+  name: String!
+  readName: String!
+  lyrist: String!
+  composer: String!
+  arranger: String!
+  specialUnitName: String!
+  category: String!
+  unitPrimaryKey: Float!
+  defaultOrder: Float!
+  musicBpm: Float!
+  openKey: Float!
+  sectionTrend: String!
+  startDate: String!
+  endDate: String!
+  hasMovie: Boolean!
+  isHidden: Boolean!
+  excludeChallenge: Boolean!
+  isTutorial: Boolean!
+  canFairUse: Boolean!
+  chart: [Chart!]
+  musicMix: [MusicMix!]
+  unit: Unit
+}
+
+type Chart {
+  id: Float!
+  difficulty: String!
+  level: Float!
+  achieveId: Float!
+  trends: [Float!]!
+  overrideLevel: String!
+  designerPrimaryKey: Float!
+  noteCount: Float!
+  chartDesigner: ChartDesigner
+}
+
+type MusicMix {
+  musicPrimaryKey: Float!
+  section: String!
+  startTime: Float!
+  startTimeBpm: Float!
+  endTime: Float!
+  endTimeBpm: Float!
+  enableLongMixStart: Boolean!
+  enableLongMixEnd: Boolean!
+  music: Music
+}
+
+type Query {
+  me: User!
+  resources: [Resource!]!
+  music(sort: MusicSortInput, filter: MusicFilterInput, page: PaginationInput): [Music!]!
+  unit(page: PaginationInput): [Unit!]!
+  character(page: PaginationInput, filter: CharacterFilterInput): [Character!]!
+  card(page: PaginationInput = {skip: 0, take: 20}, sort: CardSortInput, filter: CardFilterInput): [Card!]!
+}
+
+input MusicSortInput {
+  name: MusicSort!
+  order: SortOrder = asc
+}
+
+enum MusicSort {
+  id
+  name
+  defaultOrder
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input MusicFilterInput {
+  unit: [Float!]
+}
+
+input PaginationInput {
+  skip: Float = 0
+  take: Float = 20
+}
+
+input CharacterFilterInput {
+  unit: Float
+}
+
+input CardSortInput {
+  name: cardSort!
+  order: SortOrder = asc
+}
+
+enum cardSort {
+  id
+  name
+}
+
+input CardFilterInput {
+  attribute: attribute
+  rairity: [Float!]
+  unit: [Float!]
+}
+
+enum attribute {
+  STREET
+  PARTY
+  CUTE
+  COOL
+  ELEGANT
+}
+
+type Mutation {
+  signUp(data: UserSignUpInput!): UserWithToken!
+  emailVerifyReq(email: String!): Boolean!
+  emailVerify(data: EmailVerifyInput!): Boolean!
+  login(data: SignInInput!): UserWithToken!
+  parseResource(data: ParseResourceInput!): Boolean!
+}
+
+input UserSignUpInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+input EmailVerifyInput {
+  email: String!
+  code: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input ParseResourceInput {
+  target: ResourceType!
+}
+
+enum ResourceType {
+  Music
+  Character
+}

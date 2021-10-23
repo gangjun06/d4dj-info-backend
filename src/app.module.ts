@@ -26,8 +26,8 @@ import { CharacterModule } from './character/character.module';
       }),
     }),
     GraphQLModule.forRoot({
-      // autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      // autoSchemaFile: true,
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
     }),
     UserModule,

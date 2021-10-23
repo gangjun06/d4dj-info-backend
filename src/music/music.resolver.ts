@@ -7,8 +7,10 @@ import {
   InputType,
   Field,
   registerEnumType,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
-import { Music } from './music';
+import { Chart, ChartNoteCount, Music } from './music';
 import { MusicService } from './music.service';
 import {
   ArrayMaxSize,
@@ -18,7 +20,7 @@ import {
   Min,
 } from 'class-validator';
 import { Fields } from '@/gql.decorator';
-import { Prisma } from '@prisma/client';
+import { MusicSection, Prisma } from '@prisma/client';
 
 @InputType()
 export class MusicFilterInput {
@@ -46,18 +48,17 @@ export class MusicSortInput {
   order?: Prisma.SortOrder;
 }
 
-@Resolver('music')
+@Resolver()
 export class MusicResolver {
   constructor(@Inject(MusicService) private musicService: MusicService) {}
 
-  @Query(() => [Music])
+  @Query((returns) => [Music])
   async music(
     @Args('page', { nullable: true }) page: PaginationInput,
     @Args('filter', { nullable: true }) filter: MusicFilterInput,
     @Args('sort', { nullable: true }) order: MusicSortInput,
     @Fields() fields: object,
   ) {
-    console.log(fields);
     return this.musicService.getMusic({}, order, page, {
       ...('chart' in fields && {
         chart: {

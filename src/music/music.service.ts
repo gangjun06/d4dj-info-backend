@@ -1,8 +1,8 @@
 import { PrismaService } from '@/prisma.service';
 import { PaginationInput } from '@/types';
 import { Inject, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { Music } from './music';
+import { MusicSection, Prisma } from '@prisma/client';
+import { ChartNoteCount, Music } from './music';
 import { MusicFilterInput, MusicSortInput } from './music.resolver';
 import _ from 'lodash';
 
@@ -29,5 +29,18 @@ export class MusicService {
         include,
       })
     ).map((item) => Music.gqlSchema(item));
+  }
+
+  async getChartNoteCount(chartId: number, section: MusicSection) {
+    return ChartNoteCount.gqlSchema(
+      await this.prismaService.chartNoteCount.findFirst({
+        where: {
+          AND: {
+            chartId,
+            section,
+          },
+        },
+      }),
+    );
   }
 }

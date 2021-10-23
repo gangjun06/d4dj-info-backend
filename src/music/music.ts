@@ -104,7 +104,6 @@ export class Music {
 export class Chart {
   @Field()
   id: number;
-  @Field()
   musicPrimaryKey: number;
   @Field()
   difficulty: string;
@@ -118,11 +117,11 @@ export class Chart {
   overrideLevel: string;
   @Field()
   designerPrimaryKey: number;
+  @Field()
+  noteCount: number;
 
   @Field((type) => ChartDesigner, { nullable: true })
   chartDesigner?: ChartDesigner;
-  @Field((type) => [ChartNoteCount], { nullable: true })
-  chartNoteCount?: ChartNoteCount[];
 
   static prismaSchema(data: Chart): prisma.Chart {
     return data as prisma.Chart;
@@ -138,9 +137,6 @@ export class Chart {
       ...data,
       chartDesigner:
         data.chartDesigner && ChartDesigner.gqlSchema(data.chartDesigner),
-      chartNoteCount:
-        data.chartNoteCount &&
-        data.chartNoteCount.map((item) => ChartNoteCount.gqlSchema(item)),
     };
   }
 }
@@ -190,9 +186,6 @@ export class ChartNoteCount {
   @Field()
   count: number;
 
-  @Field((type) => Chart, { nullable: true })
-  chart?: Chart;
-
   static prismaSchema(data: ChartNoteCount): prisma.ChartNoteCount {
     return { ...data };
   }
@@ -202,7 +195,6 @@ export class ChartNoteCount {
   ): ChartNoteCount {
     return {
       ...data,
-      chart: data.chart && Chart.gqlSchema(data.chart),
     };
   }
 }

@@ -148,6 +148,7 @@ model Chart {
   trends             Float[]
   overrideLevel      String
   designerPrimaryKey Int
+  noteCount          Int
 
   music         Music         @relation(fields: [musicPrimaryKey], references: [id])
   chartDesigner ChartDesigner @relation(fields: [designerPrimaryKey], references: [id])
