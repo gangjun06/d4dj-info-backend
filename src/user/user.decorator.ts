@@ -13,16 +13,9 @@ export const CurrentUser = createParamDecorator(
   },
 );
 
-export const Auth = ({
-  onlyAdmin = false,
-  onlyVerify = true,
-}: {
-  onlyAdmin?: boolean;
-  onlyVerify?: boolean;
-}) => {
+export const Auth = (data?: { onlyAdmin?: boolean }) => {
   return applyDecorators(
     SetMetadata('useAuth', true),
-    SetMetadata('onlyAdmin', onlyAdmin),
-    SetMetadata('onlyVerify', onlyVerify),
+    SetMetadata('onlyAdmin', data?.onlyAdmin || false),
   );
 };

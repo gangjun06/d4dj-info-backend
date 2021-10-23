@@ -16,13 +16,12 @@ import { CharacterModule } from './character/character.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: process.env.NODE_ENV == 'dev' ? '.env.dev' : '.env.prod',
+      envFilePath: process.env.NODE_ENV == 'dev' ? '.env.dev' : '.env',
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'prod').required(),
-        MAILGUN_APIKEY: Joi.string().required(),
-        MAILGUN_DOMAIN: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
-        BASE_FILE_URL: Joi.string().uri().required(),
+        BASE_FILE_URL: Joi.string().uri(),
+        PORT: Joi.number(),
       }),
     }),
     GraphQLModule.forRoot({

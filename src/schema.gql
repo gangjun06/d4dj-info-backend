@@ -196,27 +196,12 @@ enum attribute {
 }
 
 type Mutation {
-  signUp(data: UserSignUpInput!): UserWithToken!
-  emailVerifyReq(email: String!): Boolean!
-  emailVerify(data: EmailVerifyInput!): Boolean!
-  login(data: SignInInput!): UserWithToken!
+  loginReq(data: LoginReqInput!): UserWithToken!
   parseResource(data: ParseResourceInput!): Boolean!
 }
 
-input UserSignUpInput {
+input LoginReqInput {
   email: String!
-  name: String!
-  password: String!
-}
-
-input EmailVerifyInput {
-  email: String!
-  code: String!
-}
-
-input SignInInput {
-  email: String!
-  password: String!
 }
 
 input ParseResourceInput {

@@ -20,23 +20,11 @@ export class RoleGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    const onlyVerify = this.reflector.getAllAndOverride<boolean>('onlyVerify', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
 
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext().req.user as User;
 
     if (onlyAdmin && !user.isAdmin) {
-      throw new ForbiddenException({
-        statusCode: HttpStatus.FORBIDDEN,
-        message: ['FORBIDDEN'],
-        error: 'Forbidden',
-      });
-    }
-
-    if (onlyVerify && !user.emailVerified) {
       throw new ForbiddenException({
         statusCode: HttpStatus.FORBIDDEN,
         message: ['FORBIDDEN'],
