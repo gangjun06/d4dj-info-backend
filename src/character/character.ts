@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Attribute } from '@prisma/client';
 import {
   Card as PrismaCard,
@@ -9,7 +9,7 @@ import {
 
 @ObjectType()
 export class Unit {
-  @Field()
+  @Field((type) => ID)
   id: number;
   @Field()
   name: string;
@@ -57,7 +57,7 @@ export class Unit {
 
 @ObjectType()
 export class Character {
-  @Field()
+  @Field((type) => ID)
   id: number;
   @Field()
   fullName: string;
@@ -103,7 +103,7 @@ export class Character {
 
 @ObjectType()
 export class Skill {
-  @Field()
+  @Field((type) => ID)
   id: number;
   @Field()
   minRecoveryValue: number;
@@ -145,7 +145,7 @@ export enum AttributeForParse {
 
 @ObjectType()
 export class Card {
-  @Field()
+  @Field((type) => ID)
   id: number;
 
   rarityPrimaryKey?: number;

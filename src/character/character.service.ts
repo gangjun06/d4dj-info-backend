@@ -3,7 +3,7 @@ import { PaginationInput } from '@/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Card, Character, Unit } from './character';
-import { CardFilterInput, CardSort, CardSortInput } from './character.resolver';
+import { CardFilterInput, CardSortInput } from './character.resolver';
 
 @Injectable()
 export class CharacterService {
@@ -66,9 +66,10 @@ export class CharacterService {
           {},
         ],
       },
-      ...(orderBy && {
-        orderBy: { [orderBy.name]: orderBy.order },
-      }),
+      ...PrismaService.getOrderValue<Prisma.CardFindManyArgs>(
+        orderBy.name,
+        orderBy.order,
+      ),
 
       include,
     });

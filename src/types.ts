@@ -23,6 +23,4 @@ export class PaginationInput {
   take: number;
 }
 
-type enums = typeof CardSort;
-
 registerEnumType(Prisma.SortOrder, { name: 'SortOrder' });

@@ -9,7 +9,6 @@ import {
   Field,
   registerEnumType,
 } from '@nestjs/graphql';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import { Attribute, Prisma } from '@prisma/client';
 import {
   ArrayMaxSize,

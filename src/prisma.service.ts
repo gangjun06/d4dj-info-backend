@@ -1,5 +1,6 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
+import lodash from 'lodash';
 
 @Injectable()
 export class PrismaService
@@ -15,6 +16,25 @@ export class PrismaService
         { emit: 'stdout', level: 'error' },
       ],
     });
+  }
+
+  static getOrderValue<T extends object>(
+    name: string | undefined,
+    order: Prisma.SortOrder | undefined,
+  ): T {
+    if (!name) return undefined;
+    //@ts-ignore
+    let newObject: object = {
+      orderBy: name.split('.').reduceRight(
+        //@ts-ignore
+        (obj, next) => ({
+          [next]: obj,
+        }),
+        order,
+      ),
+    };
+
+    return newObject as T;
   }
 
   async onModuleInit() {
