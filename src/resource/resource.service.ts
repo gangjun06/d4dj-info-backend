@@ -69,6 +69,7 @@ export class ResourceService {
       {
         const res = await axios.get(`${baseUrl}/MusicMixMaster.json`);
         const result = this.parse<MusicMix>(res.data);
+
         await this.prismaService.musicMix.deleteMany({});
         await this.prismaService.musicMix.createMany({
           data: result.map<prisma.MusicMix>((item) =>
@@ -87,7 +88,8 @@ export class ResourceService {
       {
         const res = await axios.get(`${baseUrl}/ChartNoteCountMaster.json`);
         const result = this.parse<ChartNoteCount>(res.data);
-        await this.prismaService.musicMix.deleteMany({});
+        await this.prismaService.chartNoteCount.deleteMany({});
+
         await this.prismaService.chartNoteCount.createMany({
           data: result.map<prisma.ChartNoteCount>((item) =>
             ChartNoteCount.prismaSchema(item),
