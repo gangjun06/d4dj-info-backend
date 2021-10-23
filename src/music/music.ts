@@ -16,15 +16,11 @@ export class ChartDesigner {
   name: string;
 
   static prismaSchema(data: ChartDesigner): prisma.ChartDesigner {
-    return {
-      ...data,
-    };
+    return data;
   }
 
   static gqlSchema(data: prisma.ChartDesigner): ChartDesigner {
-    return {
-      ...data,
-    };
+    return data;
   }
 }
 
@@ -79,8 +75,8 @@ export class Music {
   @Field((type) => [MusicMix], { nullable: true })
   musicMix?: MusicMix[];
 
-  @Field((type) => [Unit], { nullable: true })
-  unit?: Unit[];
+  @Field((type) => Unit, { nullable: true })
+  unit?: Unit;
 
   static prismaSchema(data: Music): prisma.Music {
     data.purchaseBonusesPrimaryKey = undefined;
@@ -91,18 +87,15 @@ export class Music {
     data: prisma.Music & {
       chart?: prisma.Chart[];
       musicMix?: prisma.MusicMix[];
-      unit?: prisma.Unit[];
+      unit?: prisma.Unit;
     },
   ): Music {
     return {
       ...data,
-      chart: data.chart
-        ? data.chart.map((item) => Chart.gqlSchema(item))
-        : null,
-      musicMix: data.musicMix
-        ? data.musicMix.map((item) => MusicMix.gqlSchema(item))
-        : null,
-      unit: data.unit ? data.unit.map((item) => Unit.gqlSchema(item)) : null,
+      chart: data.chart && data.chart.map((item) => Chart.gqlSchema(item)),
+      musicMix:
+        data.musicMix && data.musicMix.map((item) => MusicMix.gqlSchema(item)),
+      unit: data.unit && Unit.gqlSchema(data.unit),
     };
   }
 }
@@ -143,12 +136,11 @@ export class Chart {
   ): Chart {
     return {
       ...data,
-      chartDesigner: data.chartDesigner
-        ? ChartDesigner.gqlSchema(data.chartDesigner)
-        : null,
-      chartNoteCount: data.chartNoteCount
-        ? data.chartNoteCount.map((item) => ChartNoteCount.gqlSchema(item))
-        : null,
+      chartDesigner:
+        data.chartDesigner && ChartDesigner.gqlSchema(data.chartDesigner),
+      chartNoteCount:
+        data.chartNoteCount &&
+        data.chartNoteCount.map((item) => ChartNoteCount.gqlSchema(item)),
     };
   }
 }
@@ -183,7 +175,7 @@ export class MusicMix {
   static gqlSchema(data: prisma.MusicMix & { music?: prisma.Music }): MusicMix {
     return {
       ...data,
-      music: data.music ? Music.gqlSchema(data.music) : null,
+      music: data.music && Music.gqlSchema(data.music),
     };
   }
 }
@@ -210,7 +202,7 @@ export class ChartNoteCount {
   ): ChartNoteCount {
     return {
       ...data,
-      chart: data.chart ? Chart.gqlSchema(data.chart) : null,
+      chart: data.chart && Chart.gqlSchema(data.chart),
     };
   }
 }

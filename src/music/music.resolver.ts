@@ -32,6 +32,7 @@ export class MusicFilterInput {
 export enum MusicSort {
   id = 'id',
   name = 'name',
+  defaultOrder = 'defaultOrder',
 }
 
 registerEnumType(MusicSort, { name: 'MusicSort' });
@@ -56,6 +57,20 @@ export class MusicResolver {
     @Args('sort', { nullable: true }) order: MusicSortInput,
     @Fields() fields: object,
   ) {
-    return [];
+    console.log(fields);
+    return this.musicService.getMusic({}, order, page, {
+      ...('chart' in fields && {
+        chart: {
+          include: {
+            chartDesigner:
+              'chartDesigner' in
+              //@ts-ignore
+              fields.chart.fieldsByTypeName,
+          },
+        },
+      }),
+      musicMix: 'musicMix' in fields,
+      unit: 'unit' in fields,
+    });
   }
 }

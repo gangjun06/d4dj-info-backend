@@ -10,12 +10,11 @@ export class CharacterService {
   constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   async getUnit(
-    { take, skip }: PaginationInput,
+    page: PaginationInput,
     include: Prisma.UnitInclude,
   ): Promise<Unit[]> {
     const unit = await this.prismaService.unit.findMany({
-      take,
-      skip,
+      ...(page && page),
       include: include,
     });
     let result: Unit[] = [];
@@ -25,12 +24,11 @@ export class CharacterService {
     return result;
   }
   async getCharacter(
-    { take, skip }: PaginationInput,
+    page: PaginationInput,
     include: Prisma.CharacterInclude,
   ): Promise<Character[]> {
     const character = await this.prismaService.character.findMany({
-      take,
-      skip,
+      ...(page && page),
       include,
     });
     let result: Character[] = [];
@@ -42,34 +40,36 @@ export class CharacterService {
   async getCard(
     filter: CardFilterInput,
     orderBy: CardSortInput,
-    { take, skip }: PaginationInput,
+    page: PaginationInput,
     include: Prisma.CardInclude,
   ): Promise<Card[]> {
     const card = await this.prismaService.card.findMany({
-      take,
-      skip,
-      where: {
-        attribute: filter.attribute,
-        AND: [
-          filter.rairity && {
-            OR: [...filter.rairity.map((item) => ({ rarity: item }))],
-          },
-          filter.unit && {
-            OR: [
-              ...filter.unit.map((item) => ({
-                character: {
-                  unitPrimaryKey: item,
-                },
-              })),
-            ],
-          },
-          {},
-        ],
-      },
-      ...PrismaService.getOrderValue<Prisma.CardFindManyArgs>(
-        orderBy.name,
-        orderBy.order,
-      ),
+      ...(page && page),
+      ...(filter && {
+        where: {
+          attribute: filter.attribute,
+          AND: [
+            filter.rairity && {
+              OR: [...filter.rairity.map((item) => ({ rarity: item }))],
+            },
+            filter.unit && {
+              OR: [
+                ...filter.unit.map((item) => ({
+                  character: {
+                    unitPrimaryKey: item,
+                  },
+                })),
+              ],
+            },
+            {},
+          ],
+        },
+      }),
+      ...(orderBy &&
+        PrismaService.getOrderValue<Prisma.CardFindManyArgs>(
+          orderBy.name,
+          orderBy.order,
+        )),
 
       include,
     });

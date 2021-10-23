@@ -22,7 +22,7 @@ export class PrismaService
     name: string | undefined,
     order: Prisma.SortOrder | undefined,
   ): T {
-    if (!name) return undefined;
+    if (!name || name.trim() === '') return undefined;
     //@ts-ignore
     let newObject: object = {
       orderBy: name.split('.').reduceRight(
