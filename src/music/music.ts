@@ -53,9 +53,9 @@ export class Music {
   @Field()
   sectionTrend: string;
   @Field()
-  startDate: string;
+  startDate: Date;
   @Field()
-  endDate: string;
+  endDate: Date;
   @Field()
   hasMovie: boolean;
   // @Field((returns) => [Number])

@@ -4,7 +4,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { MusicSection, Prisma } from '@prisma/client';
 import { ChartNoteCount, Music } from './music';
 import { MusicFilterInput, MusicSortInput } from './music.resolver';
-import _ from 'lodash';
 
 @Injectable()
 export class MusicService {

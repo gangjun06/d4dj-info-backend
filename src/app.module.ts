@@ -11,6 +11,8 @@ import { PrismaService } from './prisma.service';
 import { MusicModule } from './music/music.module';
 import { CharacterModule } from './character/character.module';
 import { AppController } from './app.controller';
+import { EventModule } from './event/event.module';
+import { ItemsModule } from './items/items.module';
 import configuration from './configuration';
 
 @Module({
@@ -39,6 +41,8 @@ import configuration from './configuration';
     ResourceModule,
     MusicModule,
     CharacterModule,
+    EventModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [

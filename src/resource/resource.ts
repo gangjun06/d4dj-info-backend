@@ -3,6 +3,7 @@ import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 export enum ResourceType {
   Music = 'Music',
   Character = 'Character',
+  Event = 'Event',
 }
 
 registerEnumType(ResourceType, { name: 'ResourceType' });

@@ -26,6 +26,8 @@ export class ResourceService {
     private readonly configService: ConfigService,
   ) {}
 
+  private baseUrl = this.configService.get<string>('BASE_FILE_URL') + 'Master';
+
   // ex) StartDate -> startDate
   private formatText(str: string): string {
     const splited = str.replace(/__/gi, '').split('');
@@ -44,123 +46,132 @@ export class ResourceService {
     return newObj;
   }
 
-  async getResources(target: ResourceType): Promise<void> {
-    const baseUrl = this.configService.get<string>('BASE_FILE_URL') + 'Master';
-    if (target === ResourceType.Music) {
-      let comboInfo: { [key: string]: { Count: number } }[];
-      const getCombo = (id: number | string, type: MusicSection): number =>
-        comboInfo[`(${id}, ${type})`]?.Count || -1;
-      {
-        const res = await axios.get(`${baseUrl}/ChartNoteCountMaster.json`);
-        comboInfo = res.data;
-        const result = this.parse<ChartNoteCount>(res.data);
-        await this.prismaService.chartNoteCount.deleteMany({});
-        await this.prismaService.chartNoteCount.createMany({
-          data: result.map<prisma.ChartNoteCount>((item) =>
-            ChartNoteCount.prismaSchema(item),
-          ),
-        });
-      }
-      {
-        const res = await axios.get(`${baseUrl}/ChartDesignerMaster.json`);
-        const result = this.parse<ChartDesigner>(res.data);
-
-        await this.prismaService.chartDesigner.createMany({
-          data: result.map<prisma.ChartDesigner>((item) =>
-            ChartDesigner.prismaSchema(item),
-          ),
-          skipDuplicates: true,
-        });
-      }
-      {
-        const res = await axios.get(`${baseUrl}/MusicMaster.json`);
-        const result = this.parse<Music>(res.data);
-        await this.prismaService.music.createMany({
-          data: result.map<prisma.Music>((item) => Music.prismaSchema(item)),
-          skipDuplicates: true,
-        });
-      }
-      {
-        const res = await axios.get(`${baseUrl}/MusicMixMaster.json`);
-        const result = this.parse<MusicMix>(res.data);
-
-        await this.prismaService.musicMix.deleteMany({});
-        await this.prismaService.musicMix.createMany({
-          data: result.map<prisma.MusicMix>((item) =>
-            MusicMix.prismaSchema({
-              ...item,
-            }),
-          ),
-        });
-      }
-      {
-        const res = await axios.get(`${baseUrl}/ChartMaster.json`);
-        const result = this.parse<Chart>(res.data);
-        await this.prismaService.chart.createMany({
-          data: result.map<prisma.Chart>((item) =>
-            Chart.prismaSchema({
-              ...item,
-              noteCount: getCombo(item.id, MusicSection.Full),
-            }),
-          ),
-          skipDuplicates: true,
-        });
-      }
-    } else if (target === ResourceType.Character) {
-      {
-        const res = await axios.get(`${baseUrl}/SkillMaster.json`);
-        const result = this.parse<Skill>(res.data);
-        let insertData: Prisma.SkillCreateManyInput[] = [];
-
-        result.forEach((item) => {
-          insertData.push(Skill.prismaSchema(item));
-        });
-
-        await this.prismaService.skill.createMany({
-          data: insertData,
-          skipDuplicates: true,
-        });
-      }
-      {
-        const res = await axios.get(`${baseUrl}/UnitMaster.json`);
-        const result = this.parse<Unit>(res.data);
-        let insertData: Prisma.UnitCreateManyInput[] = [];
-
-        result.forEach((item) => {
-          insertData.push(Unit.prismaSchema(item));
-        });
-
-        await this.prismaService.unit.createMany({
-          data: insertData,
-          skipDuplicates: true,
-        });
-      }
-      {
-        const res = await axios.get(`${baseUrl}/CharacterMaster.json`);
-        const result = this.parse<Character>(res.data);
-        let insertData: Prisma.CharacterCreateManyInput[] = [];
-
-        result.forEach((item) => {
-          insertData.push(Character.prismaSchema(item));
-        });
-        await this.prismaService.character.createMany({
-          data: insertData,
-          skipDuplicates: true,
-        });
-      }
-      {
-        const res = await axios.get(`${baseUrl}/CardMaster.json`);
-        const result = this.parse<Card>(res.data);
-        let insertData: Prisma.CardCreateManyInput[] = [];
-
-        result.forEach((item) => {
-          insertData.push(Card.prismaSchema(item));
-        });
-        await this.prismaService.card.createMany({
-          data: insertData,
-          skipDuplicates: true,
-        });
-      }
+  private async parseMusic(): Promise<void> {
+    let comboInfo: { [key: string]: { Count: number } }[];
+    const getCombo = (id: number | string, type: MusicSection): number =>
+      comboInfo[`(${id}, ${type})`]?.Count || -1;
+    {
+      const res = await axios.get(`${this.baseUrl}/ChartNoteCountMaster.json`);
+      comboInfo = res.data;
+      const result = this.parse<ChartNoteCount>(res.data);
+      await this.prismaService.chartNoteCount.deleteMany({});
+      await this.prismaService.chartNoteCount.createMany({
+        data: result.map<prisma.ChartNoteCount>((item) =>
+          ChartNoteCount.prismaSchema(item),
+        ),
+      });
     }
+    {
+      const res = await axios.get(`${this.baseUrl}/ChartDesignerMaster.json`);
+      const result = this.parse<ChartDesigner>(res.data);
+
+      await this.prismaService.chartDesigner.createMany({
+        data: result.map<prisma.ChartDesigner>((item) =>
+          ChartDesigner.prismaSchema(item),
+        ),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/MusicMaster.json`);
+      const result = this.parse<Music>(res.data);
+      await this.prismaService.music.createMany({
+        data: result.map<prisma.Music>((item) => Music.prismaSchema(item)),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/MusicMixMaster.json`);
+      const result = this.parse<MusicMix>(res.data);
+
+      await this.prismaService.musicMix.deleteMany({});
+      await this.prismaService.musicMix.createMany({
+        data: result.map<prisma.MusicMix>((item) =>
+          MusicMix.prismaSchema(item),
+        ),
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/ChartMaster.json`);
+      const result = this.parse<Chart>(res.data);
+      await this.prismaService.chart.createMany({
+        data: result.map<prisma.Chart>((item) =>
+          Chart.prismaSchema({
+            ...item,
+            noteCount: getCombo(item.id, MusicSection.Full),
+          }),
+        ),
+        skipDuplicates: true,
+      });
+    }
+  }
+
+  private async parseCharacter(): Promise<void> {
+    {
+      const res = await axios.get(`${this.baseUrl}/SkillMaster.json`);
+      const result = this.parse<Skill>(res.data);
+      let insertData: Prisma.SkillCreateManyInput[] = [];
+
+      result.forEach((item) => {
+        insertData.push(Skill.prismaSchema(item));
+      });
+
+      await this.prismaService.skill.createMany({
+        data: insertData,
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/UnitMaster.json`);
+      const result = this.parse<Unit>(res.data);
+      let insertData: Prisma.UnitCreateManyInput[] = [];
+
+      result.forEach((item) => {
+        insertData.push(Unit.prismaSchema(item));
+      });
+
+      await this.prismaService.unit.createMany({
+        data: insertData,
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/CharacterMaster.json`);
+      const result = this.parse<Character>(res.data);
+      let insertData: Prisma.CharacterCreateManyInput[] = [];
+
+      result.forEach((item) => {
+        insertData.push(Character.prismaSchema(item));
+      });
+      await this.prismaService.character.createMany({
+        data: insertData,
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/CardMaster.json`);
+      const result = this.parse<Card>(res.data);
+      let insertData: Prisma.CardCreateManyInput[] = [];
+
+      result.forEach((item) => {
+        insertData.push(Card.prismaSchema(item));
+      });
+      await this.prismaService.card.createMany({
+        data: insertData,
+        skipDuplicates: true,
+      });
+    }
+  }
+
+  private async parseEvent(): Promise<void> {
+    {
+      const res = await axios.get(`${this.baseUrl}/EventMaster.json`);
+    }
+  }
+
+  async getResources(target: ResourceType): Promise<void> {
+    if (target === ResourceType.Music) this.parseMusic();
+    else if (target === ResourceType.Character) this.parseCharacter();
+    else if (target === ResourceType.Event) this.parseEvent();
   }
 }

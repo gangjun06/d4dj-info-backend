@@ -101,8 +101,8 @@ model Music {
   musicBpm         Float
   openKey          Int
   sectionTrend     String
-  startDate        String
-  endDate          String
+  startDate        DateTime
+  endDate          DateTime
   hasMovie         Boolean
   // purchaseBonusesPrimaryKey any[]
   isHidden         Boolean
@@ -111,9 +111,10 @@ model Music {
   canFairUse       Boolean
   // static prismaSchema(data Music): Prisma
 
-  unit     Unit       @relation(fields: [unitPrimaryKey], references: [id])
-  chart    Chart[]
-  musicMix MusicMix[]
+  unit                   Unit                     @relation(fields: [unitPrimaryKey], references: [id])
+  chart                  Chart[]
+  musicMix               MusicMix[]
+  EventMedleySetlistItem EventMedleySetlistItem[]
 }
 
 enum ChartDifficulty {
@@ -171,4 +172,128 @@ model ChartNoteCount {
   chartId Int
   section MusicSection
   count   Int
+}
+
+enum EventType {
+  Raid
+  Slot
+  Poker
+  Medley
+  Bingo
+
+}
+
+model Event {
+  id                     Int       @id
+  name                   String
+  type                   EventType
+  startDate              DateTime
+  receptionCloseDate     DateTime
+  rankFixStartDate       DateTime
+  resultAnnouncementDate DateTime
+  endDate                DateTime
+  stockId                Int
+  entryBonusStockAmount  Int
+  stockAmountPerUse      Int
+  episodeCharacters      Int[]
+  storyUnlockDate        DateTime
+  showExchangeButton     Boolean
+  sxchangeShopId         Int
+  isD4FesStory           Boolean
+  topPrefabPath          String
+  showMissionButton      Boolean
+  bgmPath                String
+
+  eventAggregation EventAggregation[]
+  stock            Stock              @relation(fields: [stockId], references: [id])
+}
+
+model EventAggregation {
+  id                Int    @id
+  eventPrimaryKey   Int
+  aggregationType   String
+  pointTypeName     String
+  pointTypeIconName String
+
+  event              Event                @relation(fields: [eventPrimaryKey], references: [id])
+  EventMedleySetlist EventMedleySetlist[]
+}
+
+model EventMedleySetlist {
+  id                                Int      @id @default(autoincrement())
+  aggregationPrimaryKey             Int      @unique
+  name                              String
+  musicIds                          Int[]
+  requiredPoint                     Int
+  startDate                         DateTime
+  endDate                           DateTime
+  order                             Int
+  specificBonusCharacterIds         Int[]
+  characterMatchParameterBonusId    Int
+  characterMatchParameterBonusValue Int
+
+  eventAggregationBase   EventAggregation         @relation(fields: [aggregationPrimaryKey], references: [id])
+  EventMedleySetlistItem EventMedleySetlistItem[]
+}
+
+model EventMedleySetlistItem {
+  id                   Int @id @default(autoincrement())
+  eventMedleySetlistId Int
+  musicId              Int
+
+  eventMedleySetlist EventMedleySetlist @relation(fields: [eventMedleySetlistId], references: [id])
+  music              Music              @relation(fields: [musicId], references: [id])
+}
+
+enum StockCategory {
+  Diamond
+  Fragment
+  Exp
+  SkillExp
+  LimitBreak
+  VoltageRecovery
+  Boost
+  MusicShop
+  Event
+  GachaTicket
+  Random
+  ParameterLevelUp
+  Other
+}
+
+model Stock {
+  id                     Int           @id
+  name                   String
+  category               StockCategory
+  viewCategoryPrimaryKey Int
+  summary                String
+  attributeId            Int
+  rarity                 Int
+  exp                    Int
+  buffCharacterId        Int
+  recoveryAmount         Int
+  consumeAmount          Int
+  maxAmount              Int
+  startDate              DateTime
+  endDate                DateTime
+  isAppropriateSales     Boolean
+
+  viewCategory StockViewCategory @relation(fields: [viewCategoryPrimaryKey], references: [id])
+  reward       Reward[]
+  Event        Event[]
+}
+
+model Reward {
+  id       Int @id
+  category Int
+  rewardId Int
+  amount   Int
+
+  stock Stock @relation(fields: [rewardId], references: [id])
+}
+
+model StockViewCategory {
+  id    Int     @id
+  name  String
+  Stock Stock[]
 }

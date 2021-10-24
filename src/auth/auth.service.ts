@@ -10,7 +10,6 @@ import {
 import * as mailgun from 'mailgun-js';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { prisma, User } from '@prisma/client';
 import { UserWithToken } from './user';
 import { ConfigService } from '@nestjs/config';
 import { sign } from 'jsonwebtoken';

@@ -10,6 +10,12 @@ CREATE TYPE "ChartDifficulty" AS ENUM ('Easy', 'Normal', 'Hard', 'Expert');
 -- CreateEnum
 CREATE TYPE "MusicSection" AS ENUM ('Full', 'Begin', 'Middle', 'End', 'DJSimulator');
 
+-- CreateEnum
+CREATE TYPE "EventType" AS ENUM ('Raid', 'Slot', 'Poker', 'Medley', 'Bingo');
+
+-- CreateEnum
+CREATE TYPE "StockCategory" AS ENUM ('Diamond', 'Fragment', 'Exp', 'SkillExp', 'LimitBreak', 'VoltageRecovery', 'Boost', 'MusicShop', 'Event', 'GachaTicket', 'Random', 'ParameterLevelUp', 'Other');
+
 -- CreateTable
 CREATE TABLE "Resource" (
     "name" TEXT NOT NULL,
@@ -93,8 +99,8 @@ CREATE TABLE "Music" (
     "musicBpm" DOUBLE PRECISION NOT NULL,
     "openKey" INTEGER NOT NULL,
     "sectionTrend" TEXT NOT NULL,
-    "startDate" TEXT NOT NULL,
-    "endDate" TEXT NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
     "hasMovie" BOOLEAN NOT NULL,
     "isHidden" BOOLEAN NOT NULL,
     "excludeChallenge" BOOLEAN NOT NULL,
@@ -152,8 +158,112 @@ CREATE TABLE "ChartNoteCount" (
     CONSTRAINT "ChartNoteCount_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Event" (
+    "id" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "type" "EventType" NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "receptionCloseDate" TIMESTAMP(3) NOT NULL,
+    "rankFixStartDate" TIMESTAMP(3) NOT NULL,
+    "resultAnnouncementDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "stockId" INTEGER NOT NULL,
+    "entryBonusStockAmount" INTEGER NOT NULL,
+    "stockAmountPerUse" INTEGER NOT NULL,
+    "episodeCharacters" INTEGER[],
+    "storyUnlockDate" TIMESTAMP(3) NOT NULL,
+    "showExchangeButton" BOOLEAN NOT NULL,
+    "sxchangeShopId" INTEGER NOT NULL,
+    "isD4FesStory" BOOLEAN NOT NULL,
+    "topPrefabPath" TEXT NOT NULL,
+    "showMissionButton" BOOLEAN NOT NULL,
+    "bgmPath" TEXT NOT NULL,
+
+    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EventAggregation" (
+    "id" INTEGER NOT NULL,
+    "eventPrimaryKey" INTEGER NOT NULL,
+    "aggregationType" TEXT NOT NULL,
+    "pointTypeName" TEXT NOT NULL,
+    "pointTypeIconName" TEXT NOT NULL,
+
+    CONSTRAINT "EventAggregation_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EventMedleySetlist" (
+    "id" SERIAL NOT NULL,
+    "aggregationPrimaryKey" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "musicIds" INTEGER[],
+    "requiredPoint" INTEGER NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "order" INTEGER NOT NULL,
+    "specificBonusCharacterIds" INTEGER[],
+    "characterMatchParameterBonusId" INTEGER NOT NULL,
+    "characterMatchParameterBonusValue" INTEGER NOT NULL,
+
+    CONSTRAINT "EventMedleySetlist_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EventMedleySetlistItem" (
+    "id" SERIAL NOT NULL,
+    "eventMedleySetlistId" INTEGER NOT NULL,
+    "musicId" INTEGER NOT NULL,
+
+    CONSTRAINT "EventMedleySetlistItem_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Stock" (
+    "id" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "category" "StockCategory" NOT NULL,
+    "viewCategoryPrimaryKey" INTEGER NOT NULL,
+    "summary" TEXT NOT NULL,
+    "attributeId" INTEGER NOT NULL,
+    "rarity" INTEGER NOT NULL,
+    "exp" INTEGER NOT NULL,
+    "buffCharacterId" INTEGER NOT NULL,
+    "recoveryAmount" INTEGER NOT NULL,
+    "consumeAmount" INTEGER NOT NULL,
+    "maxAmount" INTEGER NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "isAppropriateSales" BOOLEAN NOT NULL,
+
+    CONSTRAINT "Stock_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Reward" (
+    "id" INTEGER NOT NULL,
+    "category" INTEGER NOT NULL,
+    "rewardId" INTEGER NOT NULL,
+    "amount" INTEGER NOT NULL,
+
+    CONSTRAINT "Reward_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StockViewCategory" (
+    "id" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "StockViewCategory_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Resource_name_key" ON "Resource"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EventMedleySetlist_aggregationPrimaryKey_key" ON "EventMedleySetlist"("aggregationPrimaryKey");
 
 -- AddForeignKey
 ALTER TABLE "Character" ADD CONSTRAINT "Character_unitPrimaryKey_fkey" FOREIGN KEY ("unitPrimaryKey") REFERENCES "Unit"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -175,3 +285,24 @@ ALTER TABLE "Chart" ADD CONSTRAINT "Chart_designerPrimaryKey_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "MusicMix" ADD CONSTRAINT "MusicMix_musicPrimaryKey_fkey" FOREIGN KEY ("musicPrimaryKey") REFERENCES "Music"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Event" ADD CONSTRAINT "Event_stockId_fkey" FOREIGN KEY ("stockId") REFERENCES "Stock"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EventAggregation" ADD CONSTRAINT "EventAggregation_eventPrimaryKey_fkey" FOREIGN KEY ("eventPrimaryKey") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EventMedleySetlist" ADD CONSTRAINT "EventMedleySetlist_aggregationPrimaryKey_fkey" FOREIGN KEY ("aggregationPrimaryKey") REFERENCES "EventAggregation"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EventMedleySetlistItem" ADD CONSTRAINT "EventMedleySetlistItem_eventMedleySetlistId_fkey" FOREIGN KEY ("eventMedleySetlistId") REFERENCES "EventMedleySetlist"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EventMedleySetlistItem" ADD CONSTRAINT "EventMedleySetlistItem_musicId_fkey" FOREIGN KEY ("musicId") REFERENCES "Music"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Stock" ADD CONSTRAINT "Stock_viewCategoryPrimaryKey_fkey" FOREIGN KEY ("viewCategoryPrimaryKey") REFERENCES "StockViewCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Reward" ADD CONSTRAINT "Reward_rewardId_fkey" FOREIGN KEY ("rewardId") REFERENCES "Stock"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
