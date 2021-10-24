@@ -10,8 +10,6 @@ import {
 import * as mailgun from 'mailgun-js';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import * as randomString from 'randomstring';
-import * as bcrypt from 'bcrypt';
 import { prisma, User } from '@prisma/client';
 import { UserWithToken } from './user';
 import { ConfigService } from '@nestjs/config';

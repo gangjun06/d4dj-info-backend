@@ -7,22 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  name          String
-  password      String
-  isAdmin       Boolean  @default(false)
-  emailVerified Boolean  @default(false)
-  createdAt     DateTime @default(now())
-}
-
-model VerifyEmail {
-  email    String   @unique
-  code     String
-  createAt DateTime @default(now())
-}
-
 model Resource {
   name       String   @unique
   lastUpdate DateTime @default(now())
