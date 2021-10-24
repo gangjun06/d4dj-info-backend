@@ -279,17 +279,27 @@ model Stock {
   isAppropriateSales     Boolean
 
   viewCategory StockViewCategory @relation(fields: [viewCategoryPrimaryKey], references: [id])
-  reward       Reward[]
+  // reward       Reward[]
   Event        Event[]
 }
 
+enum RewardCategory {
+  Stock
+  Stamp
+  Music
+  Movie
+  Honor
+  ClubItem
+  Card
+}
+
 model Reward {
-  id       Int @id
-  category Int
+  id       Int            @id
+  category RewardCategory
   rewardId Int
   amount   Int
 
-  stock Stock @relation(fields: [rewardId], references: [id])
+  // stock Stock @relation(fields: [rewardId], references: [id])
 }
 
 model StockViewCategory {

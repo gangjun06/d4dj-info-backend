@@ -4,6 +4,7 @@ export enum ResourceType {
   Music = 'Music',
   Character = 'Character',
   Event = 'Event',
+  Items = 'Items',
 }
 
 registerEnumType(ResourceType, { name: 'ResourceType' });

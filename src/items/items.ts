@@ -1,4 +1,8 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import prisma, { StockCategory, RewardCategory } from '@prisma/client';
+
+registerEnumType(StockCategory, { name: 'StockCategory' });
+registerEnumType(RewardCategory, { name: 'RewardCategory' });
 
 @ObjectType()
 export class StockViewCategory {
@@ -6,18 +10,14 @@ export class StockViewCategory {
   id: number;
   @Field()
   name: string;
-}
 
-@ObjectType()
-export class Reward {
-  @Field((type) => ID)
-  id: number;
-  @Field()
-  category: string;
-  @Field()
-  rewardId: number;
-  @Field()
-  amount: number;
+  static prismaSchema(data: StockViewCategory): prisma.StockViewCategory {
+    return data;
+  }
+
+  static gqlSchema(data: prisma.StockViewCategory): StockViewCategory {
+    return data;
+  }
 }
 
 export class Stock {
@@ -26,7 +26,7 @@ export class Stock {
   @Field()
   name: string;
   @Field()
-  category: string;
+  category: StockCategory;
   viewCategoryPrimaryKey: number;
   @Field()
   summary: string;
@@ -50,4 +50,49 @@ export class Stock {
   endDate: Date;
   @Field()
   isAppropriateSales: boolean;
+
+  @Field()
+  viewCategory: StockViewCategory;
+
+  static prismaSchema(data: Stock): prisma.Stock {
+    return data;
+  }
+
+  static gqlSchema(
+    data: prisma.Stock & {
+      viewCategory?: prisma.StockViewCategory;
+    },
+  ): Stock {
+    return {
+      ...data,
+      viewCategory:
+        data.viewCategory && StockViewCategory.gqlSchema(data.viewCategory),
+    };
+  }
+}
+
+@ObjectType()
+export class Reward {
+  @Field((type) => ID)
+  id: number;
+  @Field()
+  category: RewardCategory;
+  @Field()
+  rewardId: number;
+  @Field()
+  amount: number;
+
+  //   @Field()
+  //   stock: Stock;
+
+  static prismaSchema(data: Reward): prisma.Reward {
+    return data;
+  }
+
+  static gqlSchema(data: prisma.Reward & { stock?: prisma.Stock }): Reward {
+    return {
+      ...data,
+      //       stock: data.stock && Stock.gqlSchema(data.stock),
+    };
+  }
 }

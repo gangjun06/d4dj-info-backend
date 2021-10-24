@@ -33,6 +33,7 @@ import configuration from './configuration';
     }),
     GraphQLModule.forRoot({
       // autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      playground: false,
       autoSchemaFile: true,
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       path: '/graphql',

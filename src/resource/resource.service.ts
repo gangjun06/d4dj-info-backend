@@ -5,6 +5,7 @@ import {
   Skill,
   Unit,
 } from '@/character/character';
+import { Reward, Stock, StockViewCategory } from '@/items/items';
 import {
   Chart,
   ChartDesigner,
@@ -169,9 +170,41 @@ export class ResourceService {
     }
   }
 
+  private async parseItems(): Promise<void> {
+    {
+      const res = await axios.get(
+        `${this.baseUrl}/StockViewCategoryMaster.json`,
+      );
+      const result = this.parse<StockViewCategory>(res.data);
+      await this.prismaService.stockViewCategory.createMany({
+        data: result.map<prisma.StockViewCategory>((item) =>
+          StockViewCategory.prismaSchema(item),
+        ),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/StockMaster.json`);
+      const result = this.parse<Stock>(res.data);
+      await this.prismaService.stock.createMany({
+        data: result.map<prisma.Stock>((item) => Stock.prismaSchema(item)),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/RewardMaster.json`);
+      const result = this.parse<Reward>(res.data);
+      await this.prismaService.reward.createMany({
+        data: result.map<prisma.Reward>((item) => Reward.prismaSchema(item)),
+        skipDuplicates: true,
+      });
+    }
+  }
+
   async getResources(target: ResourceType): Promise<void> {
     if (target === ResourceType.Music) this.parseMusic();
     else if (target === ResourceType.Character) this.parseCharacter();
     else if (target === ResourceType.Event) this.parseEvent();
+    else if (target === ResourceType.Items) this.parseItems();
   }
 }
