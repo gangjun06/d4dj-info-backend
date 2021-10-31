@@ -5,6 +5,7 @@ import {
   Skill,
   Unit,
 } from '@/character/character';
+import { Event, Gacha } from '@/event/event';
 import { Reward, Stock, StockViewCategory } from '@/items/items';
 import {
   Chart,
@@ -29,10 +30,14 @@ export class ResourceService {
 
   private baseUrl = this.configService.get<string>('BASE_FILE_URL') + 'Master';
 
-  // ex) StartDate -> startDate
+  // ex) StartDate -> startDate || BGMPath -> bgmpath
   private formatText(str: string): string {
-    const splited = str.replace(/__/gi, '').split('');
-    return splited[0].toLowerCase() + splited.slice(1).join('');
+    str = str.replace(/__/gi, '');
+    const match = str.match(/^\b[A-Z]+/);
+    if (match) {
+      return str.replace(/^\b[A-Z]+/, match[0].toLowerCase());
+    }
+    return str;
   }
 
   private parse<T>(json: object): T[] {
@@ -167,6 +172,28 @@ export class ResourceService {
   private async parseEvent(): Promise<void> {
     {
       const res = await axios.get(`${this.baseUrl}/EventMaster.json`);
+      const result = this.parse<Event>(res.data);
+      const list = result.map<prisma.Event>((item) => Event.prismaSchema(item));
+      for (let item of list) {
+        await this.prismaService.event.upsert({
+          where: { id: item.id },
+          update: {},
+          create: item,
+        });
+      }
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/GachaMaster.json`);
+      console.log(res.data);
+      const result = this.parse<Gacha>(res.data);
+      const list = result.map<prisma.Gacha>((item) => Gacha.prismaSchema(item));
+      for (let item of list) {
+        await this.prismaService.gacha.upsert({
+          where: { id: item.id },
+          update: {},
+          create: item,
+        });
+      }
     }
   }
 

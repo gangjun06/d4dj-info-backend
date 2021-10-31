@@ -3,7 +3,11 @@ import { PaginationInput } from '@/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Card, Character, Unit } from './character';
-import { CardFilterInput, CardSortInput } from './character.resolver';
+import {
+  CardFilterInput,
+  CardSortInput,
+  CharacterFilterInput,
+} from './character.resolver';
 
 @Injectable()
 export class CharacterService {
@@ -14,7 +18,11 @@ export class CharacterService {
     include: Prisma.UnitInclude,
   ): Promise<Unit[]> {
     const unit = await this.prismaService.unit.findMany({
-      ...(page && page),
+      ...(page && {
+        skip: page.skip,
+        take: page.take,
+        cursor: { id: page.after },
+      }),
       include: include,
     });
     let result: Unit[] = [];
@@ -24,11 +32,21 @@ export class CharacterService {
     return result;
   }
   async getCharacter(
+    filter: CharacterFilterInput,
     page: PaginationInput,
     include: Prisma.CharacterInclude,
   ): Promise<Character[]> {
     const character = await this.prismaService.character.findMany({
-      ...(page && page),
+      ...(page && {
+        skip: page.skip,
+        take: page.take,
+        ...(page.after && { cursor: { id: page.after } }),
+      }),
+      where: {
+        ...(filter.id
+          ? { id: filter.id }
+          : { AND: [filter.unit && { unitPrimaryKey: { in: filter.unit } }] }),
+      },
       include,
     });
     let result: Character[] = [];
@@ -44,25 +62,24 @@ export class CharacterService {
     include: Prisma.CardInclude,
   ): Promise<Card[]> {
     const card = await this.prismaService.card.findMany({
-      ...(page && page),
+      ...(page && {
+        skip: page.skip,
+        take: page.take,
+        ...(page.after && { cursor: { id: page.after } }),
+      }),
       ...(filter && {
         where: {
-          attribute: filter.attribute,
-          AND: [
-            filter.rairity && {
-              OR: [...filter.rairity.map((item) => ({ rarity: item }))],
-            },
-            filter.unit && {
-              OR: [
-                ...filter.unit.map((item) => ({
-                  character: {
-                    unitPrimaryKey: item,
+          ...(filter.id
+            ? { id: filter.id }
+            : {
+                AND: [
+                  { attribute: filter.attribute },
+                  filter.rairity && { rarity: { in: filter.rairity } },
+                  filter.unit && {
+                    character: { unitPrimaryKey: { in: filter.unit } },
                   },
-                })),
-              ],
-            },
-            {},
-          ],
+                ],
+              }),
         },
       }),
       ...(orderBy &&
@@ -70,13 +87,9 @@ export class CharacterService {
           orderBy.name,
           orderBy.order,
         )),
-
       include,
     });
-    let result: Card[] = [];
-    card.forEach((item) => {
-      result.push(Card.gqlSchema(item));
-    });
-    return result;
+
+    return card.map((item) => Card.gqlSchema(item));
   }
 }

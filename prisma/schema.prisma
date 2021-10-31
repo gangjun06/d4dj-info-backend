@@ -34,8 +34,9 @@ model Character {
   fullNameEnglish  String
   colorCode        String
 
-  unit Unit   @relation(fields: [unitPrimaryKey], references: [id])
-  card Card[]
+  unit   Unit    @relation(fields: [unitPrimaryKey], references: [id])
+  card   Card[]
+  Events Event[]
 }
 
 enum Attribute {
@@ -77,6 +78,7 @@ model Card {
 
   character Character @relation(fields: [characterPrimaryKey], references: [id])
   skill     Skill     @relation(fields: [skillParameterPrimaryKey], references: [id])
+  gacha     Gacha[]
 }
 
 enum MusicCategory {
@@ -111,10 +113,10 @@ model Music {
   canFairUse       Boolean
   // static prismaSchema(data Music): Prisma
 
-  unit                   Unit                     @relation(fields: [unitPrimaryKey], references: [id])
-  chart                  Chart[]
-  musicMix               MusicMix[]
-  EventMedleySetlistItem EventMedleySetlistItem[]
+  unit     Unit       @relation(fields: [unitPrimaryKey], references: [id])
+  chart    Chart[]
+  musicMix MusicMix[]
+  // EventMedleySetlistItem EventMedleySetlistItem[]
 }
 
 enum ChartDifficulty {
@@ -180,7 +182,6 @@ enum EventType {
   Poker
   Medley
   Bingo
-
 }
 
 model Event {
@@ -195,55 +196,56 @@ model Event {
   stockId                Int
   entryBonusStockAmount  Int
   stockAmountPerUse      Int
-  episodeCharacters      Int[]
   storyUnlockDate        DateTime
   showExchangeButton     Boolean
-  sxchangeShopId         Int
+  exchangeShopId         Int
   isD4FesStory           Boolean
   topPrefabPath          String
   showMissionButton      Boolean
-  bgmPath                String
+  bgmpath                String
 
-  eventAggregation EventAggregation[]
-  stock            Stock              @relation(fields: [stockId], references: [id])
+  // eventAggregation EventAggregation[]
+  // stock            Stock              @relation(fields: [stockId], references: [id])
+  // Stock Stock @relation(fields: [stockId], references: [id])
+  episodeCharactersData Character[]
 }
 
-model EventAggregation {
-  id                Int    @id
-  eventPrimaryKey   Int
-  aggregationType   String
-  pointTypeName     String
-  pointTypeIconName String
+// model EventAggregation {
+//   id                Int    @id
+//   eventPrimaryKey   Int
+//   aggregationType   String
+//   pointTypeName     String
+//   pointTypeIconName String
 
-  event              Event                @relation(fields: [eventPrimaryKey], references: [id])
-  EventMedleySetlist EventMedleySetlist[]
-}
+//   event              Event                @relation(fields: [eventPrimaryKey], references: [id])
+//   EventMedleySetlist EventMedleySetlist[]
+// }
 
-model EventMedleySetlist {
-  id                                Int      @id @default(autoincrement())
-  aggregationPrimaryKey             Int      @unique
-  name                              String
-  musicIds                          Int[]
-  requiredPoint                     Int
-  startDate                         DateTime
-  endDate                           DateTime
-  order                             Int
-  specificBonusCharacterIds         Int[]
-  characterMatchParameterBonusId    Int
-  characterMatchParameterBonusValue Int
+// model EventMedleySetlist {
+//   id                                Int      @id @default(autoincrement())
+//   aggregationPrimaryKey             Int      @unique
+//   name                              String
+//   musicIds                          Int[]
+//   requiredPoint                     Int
+//   startDate                         DateTime
+//   endDate                           DateTime
+//   order                             Int
+//   specificBonusCharacterIds         Int[]
+//   characterMatchParameterBonusId    Int
+//   characterMatchParameterBonusValue Int
 
-  eventAggregationBase   EventAggregation         @relation(fields: [aggregationPrimaryKey], references: [id])
-  EventMedleySetlistItem EventMedleySetlistItem[]
-}
+//   eventAggregationBase   EventAggregation         @relation(fields: [aggregationPrimaryKey], references: [id])
+//   EventMedleySetlistItem EventMedleySetlistItem[]
+// }
 
-model EventMedleySetlistItem {
-  id                   Int @id @default(autoincrement())
-  eventMedleySetlistId Int
-  musicId              Int
+// model EventMedleySetlistItem {
+//   id                   Int @id @default(autoincrement())
+//   eventMedleySetlistId Int
+//   musicId              Int
 
-  eventMedleySetlist EventMedleySetlist @relation(fields: [eventMedleySetlistId], references: [id])
-  music              Music              @relation(fields: [musicId], references: [id])
-}
+//   eventMedleySetlist EventMedleySetlist @relation(fields: [eventMedleySetlistId], references: [id])
+//   music              Music              @relation(fields: [musicId], references: [id])
+// }
 
 enum StockCategory {
   Diamond
@@ -280,7 +282,7 @@ model Stock {
 
   viewCategory StockViewCategory @relation(fields: [viewCategoryPrimaryKey], references: [id])
   // reward       Reward[]
-  Event        Event[]
+  // Event        Event[]
 }
 
 enum RewardCategory {
@@ -306,4 +308,50 @@ model StockViewCategory {
   id    Int     @id
   name  String
   Stock Stock[]
+}
+
+enum GachaCategory {
+  Normal
+  Event
+  Birthday
+  Revival
+  StartDash
+  Tutorial
+}
+
+enum GachaType {
+  Normal
+  StepUp
+  Etc
+}
+
+model Gacha {
+  id                               Int           @id
+  name                             String
+  tableRatesPrimaryKey             Int[]
+  tableIds                         Int[]
+  pickUpCardsPrimaryKey            Int[]
+  summary                          String
+  hasSpecificBg                    Boolean
+  startDate                        String
+  endDate                          String
+  note                             String
+  detail                           String
+  live2dBg                         String[]
+  loginTriggerMinutes              Int
+  showHomeAnimation                Boolean
+  hasPickUpDuplicateBonus          Boolean
+  gachaCardAttribute               Int
+  ascendingSortId                  Int
+  category                         GachaCategory
+  bonusStockId                     Int
+  selectBonusMaxValue              Int
+  selectBonusCardsPrimaryKey       Int[]
+  selectBonusRewardsPrimaryKey     Int[]
+  pickUpDuplicateBonusStockIds     Int[]
+  pickUpDuplicateBonusStockAmounts Int[]
+  type                             GachaType
+  stepLoopCount                    Int
+
+  pickUpCards Card[]
 }

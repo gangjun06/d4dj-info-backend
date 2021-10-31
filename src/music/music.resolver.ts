@@ -9,6 +9,7 @@ import {
   registerEnumType,
   ResolveField,
   Parent,
+  ID,
 } from '@nestjs/graphql';
 import { Chart, ChartNoteCount, Music } from './music';
 import { MusicService } from './music.service';
@@ -20,15 +21,23 @@ import {
   Min,
 } from 'class-validator';
 import { Fields } from '@/gql.decorator';
-import { MusicSection, Prisma } from '@prisma/client';
+import { MusicCategory, MusicSection, Prisma } from '@prisma/client';
 
 @InputType()
 export class MusicFilterInput {
+  @Field((type) => Number, { nullable: true })
+  @IsOptional()
+  id?: number;
+
   @Field((type) => [Number], { nullable: true })
   @IsOptional()
   @ArrayMinSize(1)
   @ArrayMaxSize(100)
   unit?: number[];
+
+  @Field((type) => [MusicCategory], { nullable: true })
+  @IsOptional()
+  category?: MusicCategory[];
 }
 
 export enum MusicSort {
@@ -59,14 +68,13 @@ export class MusicResolver {
     @Args('sort', { nullable: true }) order: MusicSortInput,
     @Fields() fields: object,
   ) {
-    return this.musicService.getMusic({}, order, page, {
+    return this.musicService.getMusic(filter, order, page, {
       ...('chart' in fields && {
         chart: {
           include: {
             chartDesigner:
-              'chartDesigner' in
               //@ts-ignore
-              fields.chart.fieldsByTypeName,
+              'chartDesigner' in fields.chart.fieldsByTypeName.Chart,
           },
         },
       }),

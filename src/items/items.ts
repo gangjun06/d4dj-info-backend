@@ -6,7 +6,7 @@ registerEnumType(RewardCategory, { name: 'RewardCategory' });
 
 @ObjectType()
 export class StockViewCategory {
-  @Field((type) => ID)
+  @Field((type) => Number)
   id: number;
   @Field()
   name: string;
@@ -21,7 +21,7 @@ export class StockViewCategory {
 }
 
 export class Stock {
-  @Field((type) => ID)
+  @Field((type) => Number)
   id: number;
   @Field()
   name: string;
@@ -73,7 +73,7 @@ export class Stock {
 
 @ObjectType()
 export class Reward {
-  @Field((type) => ID)
+  @Field((type) => Number)
   id: number;
   @Field()
   category: RewardCategory;

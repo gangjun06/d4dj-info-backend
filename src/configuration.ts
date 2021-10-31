@@ -5,8 +5,8 @@ export default (): ConfigType => ({
   baseFileUrl: process.env.BASE_FILE_URL || 'https://asset.d4dj.info/',
   oauth: {
     google: {
-      clientID:
-        process.env.GOOGLE_CIENT_ID ||
+      clientNumber:
+        process.env.GOOGLE_CIENT_Number ||
         '702367850035-eip61k79vl7r7pq1m7j873lcgdunbmsa.apps.googleusercontent.com',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL:
@@ -26,7 +26,7 @@ export type ConfigType = {
 
 export type OauthConfig = {
   google: {
-    clientID: string;
+    clientNumber: string;
     clientSecret: string;
     callbackURL: string;
   };

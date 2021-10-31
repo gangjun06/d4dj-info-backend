@@ -1,6 +1,7 @@
 import {
   Field,
   FieldMiddleware,
+  ID,
   InputType,
   MiddlewareContext,
   NextFn,
@@ -15,12 +16,18 @@ export class PaginationInput {
   @Field((type) => Number, { nullable: true, defaultValue: 0 })
   @IsOptional()
   @Min(0)
-  skip: number;
+  skip?: number;
 
   @Field((type) => Number, { nullable: true, defaultValue: 20 })
   @IsOptional()
   @Min(0)
-  take: number;
+  take?: number;
+
+  @Field((type) => Number, { nullable: true })
+  @IsOptional()
+  after?: number;
 }
+
+export const DefaultPaginationInput = new PaginationInput();
 
 registerEnumType(Prisma.SortOrder, { name: 'SortOrder' });

@@ -1,5 +1,5 @@
 import { Fields } from '@/gql.decorator';
-import { PaginationInput } from '@/types';
+import { DefaultPaginationInput, PaginationInput } from '@/types';
 import { Inject } from '@nestjs/common';
 import {
   Resolver,
@@ -8,6 +8,8 @@ import {
   InputType,
   Field,
   registerEnumType,
+  ID,
+  ObjectType,
 } from '@nestjs/graphql';
 import { Attribute, Prisma } from '@prisma/client';
 import {
@@ -22,6 +24,10 @@ import { CharacterService } from './character.service';
 
 @InputType()
 export class CharacterFilterInput {
+  @Field((type) => Number, { nullable: true })
+  @IsOptional()
+  id?: number;
+
   @Field({ nullable: true })
   @IsOptional()
   @Min(0)
@@ -31,6 +37,10 @@ export class CharacterFilterInput {
 
 @InputType()
 export class CardFilterInput {
+  @Field((type) => Number, { nullable: true })
+  @IsOptional()
+  id?: number;
+
   @Field((type) => Attribute, { nullable: true })
   @IsOptional()
   attribute?: Attribute;
@@ -50,7 +60,7 @@ export class CardFilterInput {
 
 export enum CardSort {
   id = 'id',
-  name = 'name',
+  name = 'cardName',
 }
 
 @InputType()
@@ -83,10 +93,11 @@ export class CharacterResolver {
   @Query(() => [Character])
   async character(
     @Args('filter', { nullable: true }) filter: CharacterFilterInput,
-    @Args('page', { nullable: true }) page: PaginationInput,
+    @Args('page', { nullable: true, defaultValue: DefaultPaginationInput })
+    page: PaginationInput,
     @Fields() fields: object,
   ) {
-    return this.characterService.getCharacter(page, {
+    return this.characterService.getCharacter(filter, page, {
       card: 'card' in fields,
       unit: 'unit' in fields,
     });
@@ -113,6 +124,7 @@ export class CharacterResolver {
           }
         : {}),
       skill: 'skill' in fields,
+      gacha: 'gacha' in fields,
     });
   }
 }

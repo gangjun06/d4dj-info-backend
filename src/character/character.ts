@@ -1,3 +1,4 @@
+import { Gacha } from '@/event/event';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Attribute } from '@prisma/client';
 import {
@@ -5,11 +6,12 @@ import {
   Unit as PrismaUnit,
   Character as PrismaCharacter,
   Skill as PrismaSkill,
+  Gacha as PrismaGacha,
 } from '@prisma/client';
 
 @ObjectType()
 export class Unit {
-  @Field((type) => ID)
+  @Field((type) => Number)
   id: number;
   @Field()
   name: string;
@@ -50,7 +52,7 @@ export class Unit {
 
 @ObjectType()
 export class Character {
-  @Field((type) => ID)
+  @Field((type) => Number)
   id: number;
   @Field()
   fullName: string;
@@ -80,7 +82,11 @@ export class Character {
   }
 
   static gqlSchema(
-    data: PrismaCharacter & { unit?: PrismaUnit; card?: PrismaCard[] },
+    data: PrismaCharacter & {
+      unit?: PrismaUnit;
+      card?: PrismaCard[];
+      gacha?: PrismaGacha[];
+    },
   ): Character {
     return {
       ...data,
@@ -92,7 +98,7 @@ export class Character {
 
 @ObjectType()
 export class Skill {
-  @Field((type) => ID)
+  @Field((type) => Number)
   id: number;
   @Field()
   minRecoveryValue: number;
@@ -130,7 +136,7 @@ export enum AttributeForParse {
 
 @ObjectType()
 export class Card {
-  @Field((type) => ID)
+  @Field((type) => Number)
   id: number;
 
   rarityPrimaryKey?: number;
@@ -171,6 +177,9 @@ export class Card {
   @Field((type) => Date)
   endDate: Date;
 
+  @Field((type) => [Gacha])
+  gacha: Gacha[];
+
   static prismaSchema(data: Card): PrismaCard {
     return {
       id: data.id,
@@ -192,13 +201,18 @@ export class Card {
   }
 
   static gqlSchema(
-    data: PrismaCard & { character?: PrismaCharacter; skill?: PrismaSkill },
+    data: PrismaCard & {
+      character?: PrismaCharacter;
+      skill?: PrismaSkill;
+      gacha?: PrismaGacha[];
+    },
   ): Card {
     return {
       ...data,
       attribute: data.attribute,
       skill: data.skill && Skill.gqlSchema(data.skill),
       character: data.character && Character.gqlSchema(data.character),
+      gacha: data.gacha && data.gacha.map((item) => Gacha.gqlSchema(item)),
     };
   }
 }
