@@ -64,12 +64,12 @@ export class Event {
   episodeCharactersData?: Character[];
 
   static prismaSchema(data: Event): prisma.Event & {
-    episodeCharacters: prisma.Prisma.CharacterCreateNestedManyWithoutEventsInput;
+    episodeCharactersData: prisma.Prisma.CharacterCreateNestedManyWithoutEventsInput;
   } {
     return {
       ...data,
       type: EventType[EventTypeForParse[data.type as string]],
-      episodeCharacters: {
+      episodeCharactersData: {
         connect: data.episodeCharacters.map((item) => ({ id: item })),
       },
     };
@@ -131,9 +131,9 @@ export class Gacha {
   @Field()
   hasSpecificBg: boolean;
   @Field()
-  startDate: string;
+  startDate: Date;
   @Field()
-  endDate: string;
+  endDate: Date;
   @Field()
   note: string;
   @Field()
@@ -169,7 +169,7 @@ export class Gacha {
   @Field()
   stepLoopCount: number;
 
-  @Field((type) => [Card])
+  @Field((type) => [Card], { nullable: true })
   pickUpCards: Card[];
 
   static prismaSchema(data: Gacha): prisma.Gacha & {
@@ -186,14 +186,14 @@ export class Gacha {
 
   static gqlSchema(
     data: prisma.Gacha & {
-      PickUpCards?: prisma.Card[];
+      pickUpCards?: prisma.Card[];
     },
   ): Gacha {
     return {
       ...data,
       pickUpCards:
-        data.PickUpCards &&
-        data.PickUpCards.map((item) => Card.gqlSchema(item)),
+        data.pickUpCards &&
+        data.pickUpCards.map((item) => Card.gqlSchema(item)),
     };
   }
 }

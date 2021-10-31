@@ -21,7 +21,7 @@ export class CharacterService {
       ...(page && {
         skip: page.skip,
         take: page.take,
-        cursor: { id: page.after },
+        ...(page.after && { cursor: { id: page.after } }),
       }),
       include: include,
     });

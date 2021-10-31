@@ -184,7 +184,6 @@ export class ResourceService {
     }
     {
       const res = await axios.get(`${this.baseUrl}/GachaMaster.json`);
-      console.log(res.data);
       const result = this.parse<Gacha>(res.data);
       const list = result.map<prisma.Gacha>((item) => Gacha.prismaSchema(item));
       for (let item of list) {

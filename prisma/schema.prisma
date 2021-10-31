@@ -203,6 +203,7 @@ model Event {
   topPrefabPath          String
   showMissionButton      Boolean
   bgmpath                String
+  episodeCharacters      Int[]
 
   // eventAggregation EventAggregation[]
   // stock            Stock              @relation(fields: [stockId], references: [id])
@@ -333,8 +334,8 @@ model Gacha {
   pickUpCardsPrimaryKey            Int[]
   summary                          String
   hasSpecificBg                    Boolean
-  startDate                        String
-  endDate                          String
+  startDate                        DateTime
+  endDate                          DateTime
   note                             String
   detail                           String
   live2dBg                         String[]
