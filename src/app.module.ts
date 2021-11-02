@@ -28,6 +28,7 @@ import configuration from './configuration';
         GOOGLE_CIENT_ID: Joi.string(),
         GOOGLE_CIENT_SECRET: Joi.string(),
         GOOGLE_CALLBACK_URL: Joi.string(),
+        BASIC_AUTH: Joi.string().required(),
       }),
       load: [configuration],
     }),
@@ -37,6 +38,9 @@ import configuration from './configuration';
       autoSchemaFile: true,
       buildSchemaOptions: { dateScalarMode: 'timestamp' },
       path: '/graphql',
+      context: ({ req }) => ({
+        authScope: req.headers.authorization,
+      }),
     }),
     AuthModule,
     ResourceModule,

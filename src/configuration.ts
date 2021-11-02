@@ -3,6 +3,7 @@ export default (): ConfigType => ({
   jwtSecret: process.env.JWT_SECRET || '',
   databaseUrl: process.env.DATABASE_URL || '',
   baseFileUrl: process.env.BASE_FILE_URL || 'https://asset.d4dj.info/',
+  basicAuth: process.env.BASIC_AUTH,
   oauth: {
     google: {
       clientNumber:
@@ -22,6 +23,7 @@ export type ConfigType = {
   databaseUrl: string;
   baseFileUrl: string;
   oauth: OauthConfig;
+  basicAuth: string;
 };
 
 export type OauthConfig = {
