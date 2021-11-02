@@ -41,9 +41,9 @@ export class CardFilterInput {
   @IsOptional()
   id?: number;
 
-  @Field((type) => Attribute, { nullable: true })
+  @Field((type) => [Attribute], { nullable: true })
   @IsOptional()
-  attribute?: Attribute;
+  attribute?: [Attribute];
 
   @Field((type) => [Number], { nullable: true })
   @IsOptional()

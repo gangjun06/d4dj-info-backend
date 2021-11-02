@@ -73,7 +73,7 @@ export class CharacterService {
             ? { id: filter.id }
             : {
                 AND: [
-                  { attribute: filter.attribute },
+                  filter.attribute && { attribute: { in: filter.attribute } },
                   filter.rairity && { rarity: { in: filter.rairity } },
                   filter.unit && {
                     character: { unitPrimaryKey: { in: filter.unit } },
