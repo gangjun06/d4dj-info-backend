@@ -22,29 +22,18 @@ export class MusicService {
           take: page.take,
           ...(page.after && { cursor: { id: page.after } }),
         }),
-        where: {
-          ...(filter.id
-            ? { id: filter.id }
-            : {
-                AND: [
-                  { category: { in: filter.category } },
-                  filter.category && {
-                    OR: [
-                      ...filter.category.map((item) => ({
-                        category: item,
-                      })),
-                    ],
-                  },
-                  filter.unit && {
-                    OR: [
-                      ...filter.unit.map((item) => ({
-                        unitPrimaryKey: item,
-                      })),
-                    ],
-                  },
-                ],
-              }),
-        },
+        ...(filter && {
+          where: {
+            ...(filter.id
+              ? { id: filter.id }
+              : {
+                  AND: [
+                    { category: { in: filter.category } },
+                    { unitPrimaryKey: { in: filter.unit } },
+                  ],
+                }),
+          },
+        }),
         ...(orderBy &&
           PrismaService.getOrderValue<Prisma.MusicFindManyArgs>(
             orderBy.name,

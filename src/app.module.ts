@@ -13,6 +13,7 @@ import { CharacterModule } from './character/character.module';
 import { AppController } from './app.controller';
 import { EventModule } from './event/event.module';
 import { ItemsModule } from './items/items.module';
+import { EpisodeModule } from './episode/episode.module';
 import configuration from './configuration';
 
 @Module({
@@ -48,6 +49,7 @@ import configuration from './configuration';
     CharacterModule,
     EventModule,
     ItemsModule,
+    EpisodeModule,
   ],
   controllers: [AppController],
   providers: [

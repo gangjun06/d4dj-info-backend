@@ -13,7 +13,7 @@ model Resource {
 }
 
 model Unit {
-  id                   Int         @id
+  id                   Int           @id
   name                 String
   canTraining          Boolean
   summary              String
@@ -23,6 +23,7 @@ model Unit {
   initDeckCharacterIds Int[]
   characters           Character[]
   Music                Music[]
+  UnitEpisode          UnitEpisode[]
 }
 
 model Character {
@@ -34,9 +35,10 @@ model Character {
   fullNameEnglish  String
   colorCode        String
 
-  unit   Unit    @relation(fields: [unitPrimaryKey], references: [id])
-  card   Card[]
-  Events Event[]
+  unit         Unit           @relation(fields: [unitPrimaryKey], references: [id])
+  card         Card[]
+  Events       Event[]
+  Live2DUIChat Live2DUIChat[]
 }
 
 enum Attribute {
@@ -209,6 +211,7 @@ model Event {
   // stock            Stock              @relation(fields: [stockId], references: [id])
   // Stock Stock @relation(fields: [stockId], references: [id])
   episodeCharactersData Character[]
+  EventEpisode          EventEpisode[]
 }
 
 // model EventAggregation {
@@ -355,4 +358,75 @@ model Gacha {
   stepLoopCount                    Int
 
   pickUpCards Card[]
+}
+
+enum EpisodeCategory {
+  Unit
+  Event
+  Card
+  LiveResult
+  Map
+  Character
+}
+
+model Episode {
+  id                   Int             @id
+  category             EpisodeCategory
+  conditionsPrimaryKey Int[]
+  title                String
+  summary              String
+  rewardsPrimaryKey    Int[]
+  startDate            DateTime
+  endDate              DateTime
+  hasVoice             Boolean
+}
+
+model UnitEpisode {
+  id             Int @id
+  backgroundId   Int
+  season         Int
+  unitPrimaryKey Int
+  chapterNumber  Int
+
+  unit Unit @relation(fields: [unitPrimaryKey], references: [id])
+}
+
+model EventEpisode {
+  id              Int @id
+  backgroundId    Int
+  eventPrimaryKey Int
+  chapterNumber   Int
+
+  event Event @relation(fields: [eventPrimaryKey], references: [id])
+}
+
+model CharacterEpisode {
+  id            Int @id
+  backgroundId  Int
+  characterId   Int
+  chapterNumber Int
+}
+
+model LiveResultEpisode {
+  id                   Int   @id
+  charactersPrimaryKey Int[]
+}
+
+enum Live2DUIChatCategory {
+  MenuCommon
+  Training
+  LoginBonus
+  Mission
+}
+
+model Live2DUIChat {
+  id                  Int                    @id
+  categories          Live2DUIChatCategory[]
+  characterPrimaryKey Int
+  clothId             Int
+  message             String
+  motion              String
+  startDate           DateTime
+  endDate             DateTime
+  character           Character              @relation(fields: [characterPrimaryKey], references: [id])
 }

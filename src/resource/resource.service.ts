@@ -196,6 +196,8 @@ export class ResourceService {
     }
   }
 
+  private async parseEpisode(): Promise<void> {}
+
   private async parseItems(): Promise<void> {
     {
       const res = await axios.get(

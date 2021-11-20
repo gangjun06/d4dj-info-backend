@@ -60,11 +60,11 @@ class EmailVerifyInput {
 export class AuthResolver {
   constructor(@Inject(AuthService) private userService: AuthService) {}
 
-  @Query((returns) => User)
-  @Auth()
-  async me(@CurrentUser() user: User) {
-    return user;
-  }
+  // @Query((returns) => User)
+  // @Auth()
+  // async me(@CurrentUser() user: User) {
+  //   return user;
+  // }
 
   // @Mutation((returns) => UserWithToken)
   // async signUp(@Args('data') data: UserSignUpInput) {

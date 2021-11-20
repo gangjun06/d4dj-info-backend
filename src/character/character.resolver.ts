@@ -61,6 +61,7 @@ export class CardFilterInput {
 export enum CardSort {
   id = 'id',
   name = 'cardName',
+  debutOrder = 'debutOrder',
 }
 
 @InputType()
