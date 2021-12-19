@@ -5,6 +5,7 @@ import {
   Skill,
   Unit,
 } from '@/character/character';
+import { Episode } from '@/episode/episode';
 import { Event, Gacha } from '@/event/event';
 import { Reward, Stock, StockViewCategory } from '@/items/items';
 import {
@@ -196,7 +197,20 @@ export class ResourceService {
     }
   }
 
-  private async parseEpisode(): Promise<void> {}
+  private async parseEpisode(): Promise<void> {
+    {
+      // const res = await axios.get(
+      //   `${this.baseUrl}/EpisodeMaster.json`,
+      // );
+      // const result = this.parse<Episode>(res.data);
+      // await this.prismaService.stockViewCategory.createMany({
+      //   data: result.map<prisma.StockViewCategory>((item) =>
+      //     StockViewCategory.prismaSchema(item),
+      //   ),
+      //   skipDuplicates: true,
+      // });
+    }
+  }
 
   private async parseItems(): Promise<void> {
     {

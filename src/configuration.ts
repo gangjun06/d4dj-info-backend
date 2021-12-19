@@ -6,10 +6,8 @@ export default (): ConfigType => ({
   basicAuth: process.env.BASIC_AUTH,
   oauth: {
     google: {
-      clientNumber:
-        process.env.GOOGLE_CIENT_Number ||
-        '702367850035-eip61k79vl7r7pq1m7j873lcgdunbmsa.apps.googleusercontent.com',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientNumber: process.env.GOOGLE_CIENT_Number || 'sadf',
+      clientSecret: process.env.GOOGLE_CLI,
       callbackURL:
         process.env.GOOGLE_CALLBACK_URL ||
         'http://localhost:3000/auth/google/callback',

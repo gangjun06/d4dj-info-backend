@@ -1,9 +1,14 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Character } from '@/character/character';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import prisma, { EpisodeCategory, Live2DUIChatCategory } from '@prisma/client';
+
+registerEnumType(EpisodeCategory, { name: 'EventType' });
+registerEnumType(Live2DUIChatCategory, { name: 'EventType' });
 
 @ObjectType()
 export class Episode {
   @Field()
-  category: string;
+  category: EpisodeCategory;
   @Field()
   id: number;
   @Field()
@@ -20,6 +25,18 @@ export class Episode {
   endDate: Date;
   @Field()
   hasVoice: boolean;
+
+  static prismaSchema(data: Episode): prisma.Episode {
+    return {
+      ...data,
+    };
+  }
+
+  static gqlSchema(data: prisma.Episode): Episode {
+    return {
+      ...data,
+    };
+  }
 }
 
 @ObjectType()
@@ -34,6 +51,18 @@ export class UnitEpisode {
   unitPrimaryKey: number;
   @Field()
   chapterNumber: number;
+
+  static prismaSchema(data: UnitEpisode): prisma.UnitEpisode {
+    return {
+      ...data,
+    };
+  }
+
+  static gqlSchema(data: prisma.UnitEpisode): UnitEpisode {
+    return {
+      ...data,
+    };
+  }
 }
 
 @ObjectType()
@@ -46,6 +75,18 @@ export class EventEpisode {
   eventPrimaryKey: number;
   @Field()
   chapterNumber: number;
+
+  static prismaSchema(data: UnitEpisode): prisma.UnitEpisode {
+    return {
+      ...data,
+    };
+  }
+
+  static gqlSchema(data: prisma.UnitEpisode): UnitEpisode {
+    return {
+      ...data,
+    };
+  }
 }
 
 @ObjectType()
@@ -58,6 +99,18 @@ export class CharacterEpisode {
   characterId: number;
   @Field()
   chapterNumber: number;
+
+  static prismaSchema(data: UnitEpisode): prisma.UnitEpisode {
+    return {
+      ...data,
+    };
+  }
+
+  static gqlSchema(data: prisma.UnitEpisode): UnitEpisode {
+    return {
+      ...data,
+    };
+  }
 }
 
 @ObjectType()
@@ -66,6 +119,17 @@ export class LiveResultEpisode {
   id: number;
   @Field()
   charactersPrimaryKey: number[];
+  static prismaSchema(data: UnitEpisode): prisma.UnitEpisode {
+    return {
+      ...data,
+    };
+  }
+
+  static gqlSchema(data: prisma.UnitEpisode): UnitEpisode {
+    return {
+      ...data,
+    };
+  }
 }
 
 @ObjectType()
@@ -73,7 +137,7 @@ export class Live2DUIChat {
   @Field()
   id: number;
   @Field()
-  categories: string[];
+  categories: Live2DUIChatCategory[];
   @Field()
   characterPrimaryKey: number;
   @Field()
@@ -86,4 +150,27 @@ export class Live2DUIChat {
   startDate: Date;
   @Field()
   endDate: Date;
+
+  @Field()
+  character?: Character;
+
+  static prismaSchema(data: Live2DUIChat): prisma.Live2DUIChat & {
+    character: prisma.Character;
+  } {
+    return {
+      ...data,
+      character: data.character && Character.prismaSchema(data.character),
+    };
+  }
+
+  static gqlSchema(
+    data: prisma.Live2DUIChat & {
+      character: prisma.Character;
+    },
+  ): Live2DUIChat {
+    return {
+      ...data,
+      character: data.character && Character.gqlSchema(data.character),
+    };
+  }
 }
