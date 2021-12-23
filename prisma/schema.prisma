@@ -35,10 +35,11 @@ model Character {
   fullNameEnglish  String
   colorCode        String
 
-  unit         Unit           @relation(fields: [unitPrimaryKey], references: [id])
-  card         Card[]
-  Events       Event[]
-  Live2DUIChat Live2DUIChat[]
+  unit             Unit               @relation(fields: [unitPrimaryKey], references: [id])
+  card             Card[]
+  Events           Event[]
+  Live2DUIChat     Live2DUIChat[]
+  CharacterEpisode CharacterEpisode[]
 }
 
 enum Attribute {
@@ -370,7 +371,7 @@ enum EpisodeCategory {
 }
 
 model Episode {
-  id                   Int             @id
+  id                   Int                @id
   category             EpisodeCategory
   conditionsPrimaryKey Int[]
   title                String
@@ -379,6 +380,9 @@ model Episode {
   startDate            DateTime
   endDate              DateTime
   hasVoice             Boolean
+  UnitEpisode          UnitEpisode[]
+  EventEpisode         EventEpisode[]
+  CharacterEpisode     CharacterEpisode[]
 }
 
 model UnitEpisode {
@@ -388,7 +392,8 @@ model UnitEpisode {
   unitPrimaryKey Int
   chapterNumber  Int
 
-  unit Unit @relation(fields: [unitPrimaryKey], references: [id])
+  unit    Unit    @relation(fields: [unitPrimaryKey], references: [id])
+  episode Episode @relation(fields: [id], references: [id])
 }
 
 model EventEpisode {
@@ -397,7 +402,8 @@ model EventEpisode {
   eventPrimaryKey Int
   chapterNumber   Int
 
-  event Event @relation(fields: [eventPrimaryKey], references: [id])
+  event   Event   @relation(fields: [eventPrimaryKey], references: [id])
+  episode Episode @relation(fields: [id], references: [id])
 }
 
 model CharacterEpisode {
@@ -405,6 +411,9 @@ model CharacterEpisode {
   backgroundId  Int
   characterId   Int
   chapterNumber Int
+
+  character Character @relation(fields: [characterId], references: [id])
+  episode   Episode   @relation(fields: [id], references: [id])
 }
 
 model LiveResultEpisode {

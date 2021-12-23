@@ -47,7 +47,7 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "8.1.1",
     "@nestjs/platform-fastify": "^8.1.1",
-    "@prisma/client": "^3.5.0",
+    "@prisma/client": "^3.7.0",
     "@types/bcrypt": "^5.0.0",
     "@types/mailgun-js": "^0.22.12",
     "@types/passport-local": "^1.0.34",

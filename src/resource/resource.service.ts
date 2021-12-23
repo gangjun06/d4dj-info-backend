@@ -5,7 +5,7 @@ import {
   Skill,
   Unit,
 } from '@/character/character';
-import { Episode } from '@/episode/episode';
+import { Episode, EventEpisode } from '@/episode/episode';
 import { Event, Gacha } from '@/event/event';
 import { Reward, Stock, StockViewCategory } from '@/items/items';
 import {
@@ -199,16 +199,22 @@ export class ResourceService {
 
   private async parseEpisode(): Promise<void> {
     {
-      // const res = await axios.get(
-      //   `${this.baseUrl}/EpisodeMaster.json`,
-      // );
-      // const result = this.parse<Episode>(res.data);
-      // await this.prismaService.stockViewCategory.createMany({
-      //   data: result.map<prisma.StockViewCategory>((item) =>
-      //     StockViewCategory.prismaSchema(item),
-      //   ),
-      //   skipDuplicates: true,
-      // });
+      const res = await axios.get(`${this.baseUrl}/EpisodeMaster.json`);
+      const result = this.parse<Episode>(res.data);
+      await this.prismaService.episode.createMany({
+        data: result.map<prisma.Episode>((item) => Episode.prismaSchema(item)),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/EventEpisodeMaster.json`);
+      const result = this.parse<EventEpisode>(res.data);
+      await this.prismaService.eventEpisode.createMany({
+        data: result.map<prisma.EventEpisode>((item) =>
+          EventEpisode.prismaSchema(item),
+        ),
+        skipDuplicates: true,
+      });
     }
   }
 
@@ -248,5 +254,6 @@ export class ResourceService {
     else if (target === ResourceType.Character) this.parseCharacter();
     else if (target === ResourceType.Event) this.parseEvent();
     else if (target === ResourceType.Items) this.parseItems();
+    else if (target === ResourceType.Episode) this.parseEpisode();
   }
 }
