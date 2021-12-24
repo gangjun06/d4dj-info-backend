@@ -88,6 +88,15 @@ export class CharacterResolver {
   ) {
     return this.characterService.getUnit(page, {
       characters: 'characters' in fields,
+      ...('unitEpisode' in fields && {
+        unitEpisode: {
+          include: {
+            episode:
+              //@ts-ignore
+              'episode' in fields.unitEpisode.fieldsByTypeName.UnitEpisode,
+          },
+        },
+      }),
     });
   }
 
@@ -101,6 +110,17 @@ export class CharacterResolver {
     return this.characterService.getCharacter(filter, page, {
       card: 'card' in fields,
       unit: 'unit' in fields,
+      live2DUIChat: 'live2DUIChat' in fields,
+      ...('characterEpisode' in fields && {
+        characterEpisode: {
+          include: {
+            episode:
+              'episode' in
+              //@ts-ignore
+              fields.characterEpisode.fieldsByTypeName.CharacterEpisode,
+          },
+        },
+      }),
     });
   }
 

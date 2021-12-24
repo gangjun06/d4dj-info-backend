@@ -11,6 +11,7 @@ import {
   EventEpisode,
   Live2DUIChat,
   LiveResultEpisode,
+  UnitEpisode,
 } from '@/episode/episode';
 import { Event, Gacha } from '@/event/event';
 import { Reward, Stock, StockViewCategory } from '@/items/items';
@@ -24,12 +25,7 @@ import {
 import { PrismaService } from '@/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import prisma, {
-  Attribute,
-  Live2DUIChatCategory,
-  MusicSection,
-  Prisma,
-} from '@prisma/client';
+import prisma, { MusicSection, Prisma } from '@prisma/client';
 import axios from 'axios';
 import { Resource, ResourceType } from './resource';
 
@@ -223,6 +219,16 @@ export class ResourceService {
       await this.prismaService.eventEpisode.createMany({
         data: result.map<prisma.EventEpisode>((item) =>
           EventEpisode.prismaSchema(item),
+        ),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/UnitEpisodeMaster.json`);
+      const result = this.parse<UnitEpisode>(res.data);
+      await this.prismaService.unitEpisode.createMany({
+        data: result.map<prisma.UnitEpisode>((item) =>
+          UnitEpisode.prismaSchema(item),
         ),
         skipDuplicates: true,
       });

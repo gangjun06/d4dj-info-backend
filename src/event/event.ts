@@ -1,4 +1,5 @@
 import { Card, Character } from '@/character/character';
+import { EventEpisode } from '@/episode/episode';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import prisma, { EventType, GachaCategory, GachaType } from '@prisma/client';
 
@@ -60,8 +61,12 @@ export class Event {
   showMissionButton: boolean;
   @Field()
   bgmpath: string;
-  @Field(() => [Character])
+
+  @Field((type) => [Character])
   episodeCharactersData?: Character[];
+
+  @Field((type) => [EventEpisode], { nullable: true })
+  eventEpisode?: EventEpisode[];
 
   static prismaSchema(data: Event): prisma.Event & {
     episodeCharactersData: prisma.Prisma.CharacterCreateNestedManyWithoutEventsInput;
@@ -78,6 +83,7 @@ export class Event {
   static gqlSchema(
     data: prisma.Event & {
       episodeCharactersData?: prisma.Character[];
+      eventEpisode?: prisma.EventEpisode[];
     },
   ): Event {
     return {
@@ -86,6 +92,9 @@ export class Event {
       episodeCharactersData:
         data.episodeCharactersData &&
         data.episodeCharactersData.map((item) => Character.gqlSchema(item)),
+      eventEpisode:
+        data.eventEpisode &&
+        data.eventEpisode.map((item) => EventEpisode.gqlSchema(item)),
     };
   }
 }

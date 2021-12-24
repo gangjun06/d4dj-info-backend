@@ -42,11 +42,15 @@ export class CharacterService {
         take: page.take,
         ...(page.after && { cursor: { id: page.after } }),
       }),
-      where: {
-        ...(filter.id
-          ? { id: filter.id }
-          : { AND: [filter.unit && { unitPrimaryKey: { in: filter.unit } }] }),
-      },
+      ...(filter && {
+        where: {
+          ...(filter.id
+            ? { id: filter.id }
+            : {
+                AND: [filter.unit && { unitPrimaryKey: { in: filter.unit } }],
+              }),
+        },
+      }),
       include,
     });
     let result: Character[] = [];

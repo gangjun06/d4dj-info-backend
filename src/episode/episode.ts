@@ -60,8 +60,8 @@ export class UnitEpisode {
 
   static gqlSchema(
     data: prisma.UnitEpisode & {
-      unit: prisma.Unit;
-      episode: prisma.Episode;
+      unit?: prisma.Unit;
+      episode?: prisma.Episode;
     },
   ): UnitEpisode {
     return {
@@ -94,8 +94,8 @@ export class EventEpisode {
 
   static gqlSchema(
     data: prisma.EventEpisode & {
-      event: prisma.Event;
-      episode: prisma.Episode;
+      event?: prisma.Event;
+      episode?: prisma.Episode;
     },
   ): EventEpisode {
     return {
@@ -128,8 +128,8 @@ export class CharacterEpisode {
 
   static gqlSchema(
     data: prisma.CharacterEpisode & {
-      character: prisma.Character;
-      episode: prisma.Episode;
+      character?: prisma.Character;
+      episode?: prisma.Episode;
     },
   ): CharacterEpisode {
     return {
@@ -175,7 +175,7 @@ export class Live2DUIChat {
   @Field()
   endDate: Date;
 
-  @Field()
+  @Field((type) => Character, { nullable: true })
   character?: Character;
 
   static prismaSchema(data: Live2DUIChat): prisma.Live2DUIChat {
@@ -184,7 +184,7 @@ export class Live2DUIChat {
 
   static gqlSchema(
     data: prisma.Live2DUIChat & {
-      character: prisma.Character;
+      character?: prisma.Character;
     },
   ): Live2DUIChat {
     return {

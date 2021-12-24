@@ -13,7 +13,7 @@ model Resource {
 }
 
 model Unit {
-  id                   Int           @id
+  id                   Int     @id
   name                 String
   canTraining          Boolean
   summary              String
@@ -21,9 +21,10 @@ model Unit {
   subColorCode         String
   shortName            String
   initDeckCharacterIds Int[]
-  characters           Character[]
-  Music                Music[]
-  UnitEpisode          UnitEpisode[]
+
+  characters  Character[]
+  music       Music[]
+  unitEpisode UnitEpisode[]
 }
 
 model Character {
@@ -37,9 +38,9 @@ model Character {
 
   unit             Unit               @relation(fields: [unitPrimaryKey], references: [id])
   card             Card[]
-  Events           Event[]
-  Live2DUIChat     Live2DUIChat[]
-  CharacterEpisode CharacterEpisode[]
+  events           Event[]
+  live2DUIChat     Live2DUIChat[]
+  characterEpisode CharacterEpisode[]
 }
 
 enum Attribute {
@@ -147,7 +148,7 @@ model Chart {
 model ChartDesigner {
   id    Int     @id
   name  String
-  Chart Chart[]
+  chart Chart[]
 }
 
 enum MusicSection {
@@ -212,7 +213,7 @@ model Event {
   // stock            Stock              @relation(fields: [stockId], references: [id])
   // Stock Stock @relation(fields: [stockId], references: [id])
   episodeCharactersData Character[]
-  EventEpisode          EventEpisode[]
+  eventEpisode          EventEpisode[]
 }
 
 // model EventAggregation {
@@ -312,7 +313,7 @@ model Reward {
 model StockViewCategory {
   id    Int     @id
   name  String
-  Stock Stock[]
+  stock Stock[]
 }
 
 enum GachaCategory {
@@ -371,7 +372,7 @@ enum EpisodeCategory {
 }
 
 model Episode {
-  id                   Int                @id
+  id                   Int             @id
   category             EpisodeCategory
   conditionsPrimaryKey Int[]
   title                String
@@ -380,9 +381,10 @@ model Episode {
   startDate            DateTime
   endDate              DateTime
   hasVoice             Boolean
-  UnitEpisode          UnitEpisode[]
-  EventEpisode         EventEpisode[]
-  CharacterEpisode     CharacterEpisode[]
+
+  unitEpisode      UnitEpisode[]
+  eventEpisode     EventEpisode[]
+  characterEpisode CharacterEpisode[]
 }
 
 model UnitEpisode {
@@ -437,5 +439,6 @@ model Live2DUIChat {
   motion              String
   startDate           DateTime
   endDate             DateTime
-  character           Character              @relation(fields: [characterPrimaryKey], references: [id])
+
+  character Character @relation(fields: [characterPrimaryKey], references: [id])
 }

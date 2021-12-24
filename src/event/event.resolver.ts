@@ -33,6 +33,16 @@ export class EventResolver {
   ) {
     return this.eventService.getEvent(filter, page, {
       episodeCharactersData: 'episodeCharactersData' in fields,
+      ...('eventEpisode' in fields && {
+        eventEpisode: {
+          include: {
+            episode:
+              'episode' in
+              //@ts-ignore
+              fields.eventEpisode.fieldsByTypeName.EventEpisode,
+          },
+        },
+      }),
     });
   }
 

@@ -76,7 +76,19 @@ CREATE TABLE "Live2DUIChat" (
 ALTER TABLE "UnitEpisode" ADD CONSTRAINT "UnitEpisode_unitPrimaryKey_fkey" FOREIGN KEY ("unitPrimaryKey") REFERENCES "Unit"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "UnitEpisode" ADD CONSTRAINT "UnitEpisode_id_fkey" FOREIGN KEY ("id") REFERENCES "Episode"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "EventEpisode" ADD CONSTRAINT "EventEpisode_eventPrimaryKey_fkey" FOREIGN KEY ("eventPrimaryKey") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EventEpisode" ADD CONSTRAINT "EventEpisode_id_fkey" FOREIGN KEY ("id") REFERENCES "Episode"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CharacterEpisode" ADD CONSTRAINT "CharacterEpisode_characterId_fkey" FOREIGN KEY ("characterId") REFERENCES "Character"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CharacterEpisode" ADD CONSTRAINT "CharacterEpisode_id_fkey" FOREIGN KEY ("id") REFERENCES "Episode"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Live2DUIChat" ADD CONSTRAINT "Live2DUIChat_characterPrimaryKey_fkey" FOREIGN KEY ("characterPrimaryKey") REFERENCES "Character"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

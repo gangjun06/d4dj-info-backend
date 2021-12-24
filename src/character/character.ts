@@ -1,6 +1,12 @@
 import { Gacha } from '@/event/event';
+import {
+  CharacterEpisode,
+  Episode,
+  Live2DUIChat,
+  UnitEpisode,
+} from '@/episode/episode';
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Attribute } from '@prisma/client';
+import prisma, { Attribute } from '@prisma/client';
 import {
   Card as PrismaCard,
   Unit as PrismaUnit,
@@ -30,6 +36,8 @@ export class Unit {
 
   @Field((type) => [Character], { nullable: true })
   characters?: Character[];
+  @Field((type) => [UnitEpisode], { nullable: true })
+  unitEpisode?: UnitEpisode[];
 
   static prismaSchema(data: Unit): PrismaUnit {
     data.characters = undefined;
@@ -39,6 +47,7 @@ export class Unit {
   static gqlSchema(
     data: PrismaUnit & {
       characters?: PrismaCharacter[];
+      unitEpisode?: prisma.UnitEpisode[];
     },
   ): Unit {
     return {
@@ -46,6 +55,9 @@ export class Unit {
       characters:
         data.characters &&
         data.characters.map((item) => Character.gqlSchema(item)),
+      unitEpisode:
+        data.unitEpisode &&
+        data.unitEpisode.map((item) => UnitEpisode.gqlSchema(item)),
     };
   }
 }
@@ -73,6 +85,10 @@ export class Character {
   card?: Card[];
   @Field({ nullable: true })
   unit?: Unit;
+  @Field((type) => [CharacterEpisode], { nullable: true })
+  characterEpisode?: CharacterEpisode[];
+  @Field((type) => [Live2DUIChat], { nullable: true })
+  live2DUIChat?: Live2DUIChat[];
 
   static prismaSchema(data: Character): PrismaCharacter {
     data.card = undefined;
@@ -86,12 +102,20 @@ export class Character {
       unit?: PrismaUnit;
       card?: PrismaCard[];
       gacha?: PrismaGacha[];
+      characterEpisode?: prisma.CharacterEpisode[];
+      live2DUIChat?: prisma.Live2DUIChat[];
     },
   ): Character {
     return {
       ...data,
       unit: data.unit && Unit.gqlSchema(data.unit),
       card: data.card && data.card.map((item) => Card.gqlSchema(item)),
+      characterEpisode:
+        data.characterEpisode &&
+        data.characterEpisode.map((item) => CharacterEpisode.gqlSchema(item)),
+      live2DUIChat:
+        data.live2DUIChat &&
+        data.live2DUIChat.map((item) => Live2DUIChat.gqlSchema(item)),
     };
   }
 }
