@@ -5,7 +5,13 @@ import {
   Skill,
   Unit,
 } from '@/character/character';
-import { Episode, EventEpisode } from '@/episode/episode';
+import {
+  CharacterEpisode,
+  Episode,
+  EventEpisode,
+  Live2DUIChat,
+  LiveResultEpisode,
+} from '@/episode/episode';
 import { Event, Gacha } from '@/event/event';
 import { Reward, Stock, StockViewCategory } from '@/items/items';
 import {
@@ -18,7 +24,12 @@ import {
 import { PrismaService } from '@/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import prisma, { Attribute, MusicSection, Prisma } from '@prisma/client';
+import prisma, {
+  Attribute,
+  Live2DUIChatCategory,
+  MusicSection,
+  Prisma,
+} from '@prisma/client';
 import axios from 'axios';
 import { Resource, ResourceType } from './resource';
 
@@ -212,6 +223,40 @@ export class ResourceService {
       await this.prismaService.eventEpisode.createMany({
         data: result.map<prisma.EventEpisode>((item) =>
           EventEpisode.prismaSchema(item),
+        ),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(
+        `${this.baseUrl}/CharacterEpisodeMaster.json`,
+      );
+      const result = this.parse<CharacterEpisode>(res.data);
+      await this.prismaService.characterEpisode.createMany({
+        data: result.map<prisma.CharacterEpisode>((item) =>
+          CharacterEpisode.prismaSchema(item),
+        ),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(
+        `${this.baseUrl}/LiveResultEpisodeMaster.json`,
+      );
+      const result = this.parse<LiveResultEpisode>(res.data);
+      await this.prismaService.liveResultEpisode.createMany({
+        data: result.map<prisma.LiveResultEpisode>((item) =>
+          LiveResultEpisode.prismaSchema(item),
+        ),
+        skipDuplicates: true,
+      });
+    }
+    {
+      const res = await axios.get(`${this.baseUrl}/Live2DUIChatMaster.json`);
+      const result = this.parse<Live2DUIChat>(res.data);
+      await this.prismaService.live2DUIChat.createMany({
+        data: result.map<prisma.Live2DUIChat>((item) =>
+          Live2DUIChat.prismaSchema(item),
         ),
         skipDuplicates: true,
       });

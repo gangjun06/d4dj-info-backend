@@ -12,13 +12,13 @@ export class Episode {
   category: EpisodeCategory;
   @Field()
   id: number;
-  @Field()
+  @Field((type) => [Number], { nullable: false })
   conditionsPrimaryKey: number[];
   @Field()
   title: string;
   @Field()
   summary: string;
-  @Field()
+  @Field((type) => [Number], { nullable: false })
   rewardsPrimaryKey: number[];
   @Field()
   startDate: Date;
@@ -122,7 +122,7 @@ export class CharacterEpisode {
   @Field((type) => Episode, { nullable: true })
   episode?: Episode;
 
-  static prismaSchema(data: UnitEpisode): prisma.UnitEpisode {
+  static prismaSchema(data: CharacterEpisode): prisma.CharacterEpisode {
     return data;
   }
 
@@ -144,10 +144,10 @@ export class CharacterEpisode {
 export class LiveResultEpisode {
   @Field()
   id: number;
-  @Field()
+  @Field((type) => [Number], { nullable: false })
   charactersPrimaryKey: number[];
 
-  static prismaSchema(data: UnitEpisode): prisma.UnitEpisode {
+  static prismaSchema(data: LiveResultEpisode): prisma.LiveResultEpisode {
     return data;
   }
 
@@ -160,7 +160,7 @@ export class LiveResultEpisode {
 export class Live2DUIChat {
   @Field()
   id: number;
-  @Field()
+  @Field((type) => [Live2DUIChatCategory], { nullable: false })
   categories: Live2DUIChatCategory[];
   @Field()
   characterPrimaryKey: number;

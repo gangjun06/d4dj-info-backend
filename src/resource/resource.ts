@@ -4,7 +4,7 @@ export enum ResourceType {
   Music = 'Music',
   Character = 'Character',
   Event = 'Event',
-  Episode = 'Event',
+  Episode = 'Episode',
   Items = 'Items',
 }
 
