@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "units",
+  "info": {
+    "singularName": "unit",
+    "pluralName": "units",
+    "displayName": "unit"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "uid"
+    },
+    "name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "canTraining": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean"
+    },
+    "summary": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "mainColorCode": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "subColorCode": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "shortName": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "characters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::character.character",
+      "mappedBy": "unit_primary_key"
+    }
+  }
+}
