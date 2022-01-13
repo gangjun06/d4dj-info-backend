@@ -1,5 +1,5 @@
 {
-  "name": "d-4-dj-info-backend",
+  "name": "d4dj-info-backend",
   "private": true,
   "version": "0.1.0",
   "description": "A Strapi application",
@@ -11,9 +11,10 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.0.4",
-    "@strapi/plugin-users-permissions": "4.0.4",
     "@strapi/plugin-i18n": "4.0.4",
+    "@strapi/plugin-users-permissions": "4.0.4",
+    "@strapi/provider-email-mailgun": "^4.0.4",
+    "@strapi/strapi": "4.0.4",
     "pg": "8.6.0"
   },
   "author": {
