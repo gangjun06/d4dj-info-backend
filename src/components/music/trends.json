@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_music_trends",
+  "info": {
+    "displayName": "Trends",
+    "icon": "chart-bar",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "notes": {
+      "type": "float"
+    },
+    "danger": {
+      "type": "float"
+    },
+    "scratch": {
+      "type": "float"
+    },
+    "effect": {
+      "type": "float"
+    },
+    "technique": {
+      "type": "float"
+    }
+  }
+}

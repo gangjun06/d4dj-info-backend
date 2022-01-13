@@ -4,7 +4,8 @@
   "info": {
     "singularName": "character",
     "pluralName": "characters",
-    "displayName": "Character"
+    "displayName": "Character",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -31,11 +32,22 @@
     "colorCode": {
       "type": "string"
     },
-    "unit_primary_key": {
+    "unit": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::unit.unit",
       "inversedBy": "characters"
+    },
+    "cards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::card.card",
+      "mappedBy": "character"
+    },
+    "skill": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::skill.skill"
     }
   }
 }

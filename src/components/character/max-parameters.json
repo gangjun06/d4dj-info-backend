@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_character_max_parameters",
+  "info": {
+    "displayName": "MaxParameters",
+    "icon": "level-up-alt"
+  },
+  "options": {},
+  "attributes": {
+    "heart": {
+      "type": "integer"
+    },
+    "technique": {
+      "type": "integer"
+    },
+    "physical": {
+      "type": "integer"
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "kind": "collectionType",
+  "collectionName": "charts",
+  "info": {
+    "singularName": "chart",
+    "pluralName": "charts",
+    "displayName": "Chart",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "uid"
+    },
+    "difficulty": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Easy",
+        "Normal",
+        "Hard",
+        "Expert"
+      ]
+    },
+    "level": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "decimal"
+    },
+    "musicGame": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::music-game.music-game",
+      "inversedBy": "charts"
+    },
+    "chartNoteCount": {
+      "displayName": "ChartNoteCount",
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "music.chart-note-count"
+    },
+    "chartDesigner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::chart-designer.chart-designer",
+      "inversedBy": "chart"
+    },
+    "chartAchieve": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::chart-achieve.chart-achieve"
+    }
+  }
+}

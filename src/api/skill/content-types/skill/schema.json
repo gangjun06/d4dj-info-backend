@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "units",
+  "collectionName": "skills",
   "info": {
-    "singularName": "unit",
-    "pluralName": "units",
-    "displayName": "Unit",
-    "description": ""
+    "singularName": "skill",
+    "pluralName": "skills",
+    "displayName": "Skill"
   },
   "options": {
     "draftAndPublish": false
@@ -22,61 +21,64 @@
           "localized": true
         }
       },
-      "type": "uid"
+      "type": "uid",
+      "required": true
     },
-    "name": {
+    "minRecoveryValue": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
+      "type": "integer"
     },
-    "canTraining": {
+    "maxRecoveryValue": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "boolean"
+      "type": "integer"
     },
-    "summary": {
+    "comboSupportCount": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "text"
+      "type": "integer"
     },
-    "mainColorCode": {
+    "scoreUpRate": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
+      "type": "integer"
     },
-    "subColorCode": {
+    "minSeconds": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
+      "type": "decimal"
     },
-    "shortName": {
+    "maxSeconds": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
+      "type": "decimal"
     },
-    "characters": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::character.character",
-      "mappedBy": "unit"
+    "perfectScoreUpRate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
     }
   }
 }

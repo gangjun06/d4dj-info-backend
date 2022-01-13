@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "chart_designers",
+  "info": {
+    "singularName": "chart-designer",
+    "pluralName": "chart-designers",
+    "displayName": "ChartDesigner"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "uid"
+    },
+    "name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "chart": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::chart.chart",
+      "inversedBy": "chartDesigner"
+    }
+  }
+}
