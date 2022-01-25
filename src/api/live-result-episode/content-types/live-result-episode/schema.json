@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "live_result_episodes",
+  "info": {
+    "singularName": "live-result-episode",
+    "pluralName": "live-result-episodes",
+    "displayName": "LiveResultEpisode",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "characters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::character.character"
+    },
+    "masterID": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "episode": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::episode.episode"
+    }
+  }
+}

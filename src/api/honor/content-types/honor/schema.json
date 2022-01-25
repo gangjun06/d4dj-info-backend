@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "honors",
+  "info": {
+    "singularName": "honor",
+    "pluralName": "honors",
+    "displayName": "Honor"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "masterID": {
+      "type": "integer"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Common",
+        "Mission",
+        "Character",
+        "Event",
+        "D4Pass"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "duplicateStockIds": {
+      "type": "json"
+    },
+    "duplicateStockAmounts": {
+      "type": "json"
+    },
+    "effectType": {
+      "type": "integer"
+    },
+    "conditionCardId": {
+      "type": "integer"
+    }
+  }
+}

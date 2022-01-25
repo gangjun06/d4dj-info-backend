@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_medley_setlists",
+  "info": {
+    "singularName": "event-medley-setlist",
+    "pluralName": "event-medley-setlists",
+    "displayName": "EventMedleySetlist",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "aggregation": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event-aggregation-base.event-aggregation-base",
+      "inversedBy": "eventMedleySetlists"
+    },
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "musics": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::music-game.music-game"
+    },
+    "requiredPoint": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "startDate": {
+      "type": "datetime",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "endDate": {
+      "type": "datetime",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "order": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "specificBonusCharacterIds": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::character.character"
+    },
+    "characterMatchParameterBonus": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::parameter-bonus.parameter-bonus"
+    }
+  }
+}

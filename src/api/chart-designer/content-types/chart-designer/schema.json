@@ -4,7 +4,8 @@
   "info": {
     "singularName": "chart-designer",
     "pluralName": "chart-designers",
-    "displayName": "ChartDesigner"
+    "displayName": "ChartDesigner",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -15,14 +16,6 @@
     }
   },
   "attributes": {
-    "masterID": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "uid"
-    },
     "name": {
       "pluginOptions": {
         "i18n": {
@@ -31,11 +24,19 @@
       },
       "type": "string"
     },
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
     "chart": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::chart.chart",
-      "inversedBy": "chartDesigner"
+      "inversedBy": "designer"
     }
   }
 }

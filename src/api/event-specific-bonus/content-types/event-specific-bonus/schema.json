@@ -1,0 +1,91 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_specific_bonuses",
+  "info": {
+    "singularName": "event-specific-bonus",
+    "pluralName": "event-specific-bonuses",
+    "displayName": "EventSpecificBonus",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "event": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::event.event",
+      "inversedBy": "eventSpecificBonus"
+    },
+    "characters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::character.character"
+    },
+    "attribute": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::attribute.attribute"
+    },
+    "characterMatchPointBonusValue": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "attributeMatchPointBonusValue": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "allMatchPointBonusValue": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "eventPointParameterBonusId": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "eventPointParameterBonusRate": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "allMatchParameterBonus": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::parameter-bonus.parameter-bonus"
+    },
+    "attributeMatchParameterBonus": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::parameter-bonus.parameter-bonus"
+    },
+    "characterMatchParameterBonus": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::parameter-bonus.parameter-bonus"
+    }
+  }
+}

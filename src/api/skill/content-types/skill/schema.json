@@ -4,7 +4,8 @@
   "info": {
     "singularName": "skill",
     "pluralName": "skills",
-    "displayName": "Skill"
+    "displayName": "Skill",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -15,15 +16,6 @@
     }
   },
   "attributes": {
-    "masterID": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "uid",
-      "required": true
-    },
     "minRecoveryValue": {
       "pluginOptions": {
         "i18n": {
@@ -73,6 +65,14 @@
       "type": "decimal"
     },
     "perfectScoreUpRate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "masterID": {
       "pluginOptions": {
         "i18n": {
           "localized": true

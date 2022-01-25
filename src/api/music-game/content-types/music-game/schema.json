@@ -16,15 +16,6 @@
     }
   },
   "attributes": {
-    "masterID": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "uid",
-      "required": true
-    },
     "name": {
       "pluginOptions": {
         "i18n": {
@@ -136,14 +127,6 @@
       },
       "type": "boolean"
     },
-    "isTutorial": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "boolean"
-    },
     "canFairUse": {
       "pluginOptions": {
         "i18n": {
@@ -172,7 +155,47 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::chart.chart",
-      "mappedBy": "musicGame"
+      "mappedBy": "music"
+    },
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "unused": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean"
+    },
+    "purchaseBonuses": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "unit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::unit.unit",
+      "inversedBy": "musicGames"
+    },
+    "musicMix": {
+      "type": "component",
+      "repeatable": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "music.music-mix"
     }
   }
 }

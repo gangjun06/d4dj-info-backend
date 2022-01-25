@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_episode_character_episodes",
+  "info": {
+    "displayName": "CharacterEpisode",
+    "icon": "cube"
+  },
+  "options": {},
+  "attributes": {
+    "backgroundId": {
+      "type": "integer"
+    },
+    "chapterNumber": {
+      "type": "integer"
+    },
+    "episode": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::episode.episode"
+    }
+  }
+}

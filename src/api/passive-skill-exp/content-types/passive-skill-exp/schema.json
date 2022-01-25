@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "passive_skill_exps",
+  "info": {
+    "singularName": "passive-skill-exp",
+    "pluralName": "passive-skill-exps",
+    "displayName": "PassiveSkillExp",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "level": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "rarity": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "totalExp": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_ranking_rewards",
+  "info": {
+    "singularName": "event-ranking-reward",
+    "pluralName": "event-ranking-rewards",
+    "displayName": "EventRankingReward",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Stock",
+        "Card",
+        "ClubItem",
+        "Music",
+        "Stamp",
+        "Honor",
+        "Episode",
+        "Movie",
+        "DuplicateCard"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "amount": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "lowestRanking": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "highestRanking": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "aggregation": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event-aggregation-base.event-aggregation-base",
+      "inversedBy": "rankingRewards"
+    }
+  }
+}

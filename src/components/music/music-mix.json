@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_music_music_mixes",
+  "info": {
+    "displayName": "MusicMix",
+    "icon": "folder-minus"
+  },
+  "options": {},
+  "attributes": {
+    "section": {
+      "type": "enumeration",
+      "enum": [
+        "Full",
+        "Begin",
+        "Middle",
+        "End",
+        "DJSimulator"
+      ]
+    },
+    "startTime": {
+      "type": "decimal"
+    },
+    "startTimeBpm": {
+      "type": "decimal"
+    },
+    "endTime": {
+      "type": "decimal"
+    },
+    "endTimeBpm": {
+      "type": "decimal"
+    },
+    "enableLongMixStart": {
+      "type": "boolean"
+    },
+    "enableLongMixEnd": {
+      "type": "boolean"
+    }
+  }
+}
