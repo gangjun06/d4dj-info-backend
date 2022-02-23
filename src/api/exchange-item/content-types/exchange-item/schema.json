@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "stocks",
+  "collectionName": "exchange_items",
   "info": {
-    "singularName": "stock",
-    "pluralName": "stocks",
-    "displayName": "Stock",
+    "singularName": "exchange-item",
+    "pluralName": "exchange-items",
+    "displayName": "ExchangeItem",
     "description": ""
   },
   "options": {
@@ -24,15 +24,13 @@
       },
       "type": "integer"
     },
-    "name": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string"
+    "exchange": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::exchange.exchange",
+      "inversedBy": "exchangeItems"
     },
-    "category": {
+    "rewardCategory": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -40,29 +38,42 @@
       },
       "type": "enumeration",
       "enum": [
-        "Diamond",
-        "Fragment",
-        "Exp",
-        "SkillExp",
-        "LimitBreak",
-        "VoltageRecovery",
-        "Boost",
-        "MusicShop",
-        "Event",
-        "GachaTicket",
-        "Random",
-        "ParameterLevelUp",
-        "CardStack",
-        "Other"
+        "Stock",
+        "Stamp",
+        "Music",
+        "Movie",
+        "Honor",
+        "Episode",
+        "DuplicateCard",
+        "ClubItem",
+        "Card"
       ]
     },
-    "viewCategory": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::stock-view-category.stock-view-category",
-      "inversedBy": "stocks"
+    "rewardId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
     },
-    "summary": {
+    "rewardAmount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "exchangeCount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "resetType": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -70,7 +81,7 @@
       },
       "type": "text"
     },
-    "attributeId": {
+    "resetValue": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -78,53 +89,13 @@
       },
       "type": "integer"
     },
-    "rarity": {
+    "recommend": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "integer"
-    },
-    "exp": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "buffCharacterId": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "recoveryAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "consumeAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "maxAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
+      "type": "boolean"
     },
     "startDate": {
       "pluginOptions": {
@@ -142,24 +113,57 @@
       },
       "type": "datetime"
     },
-    "isAppropriateSales": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "boolean"
+    "requiredStock1": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::stock.stock"
     },
-    "random": {
-      "displayName": "RandomStock",
-      "type": "component",
-      "repeatable": true,
+    "requiredAmount1": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "component": "game.random-stock"
+      "type": "integer"
+    },
+    "requiredStock2": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::stock.stock"
+    },
+    "requiredAmount2": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "requiredStock3": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::stock.stock"
+    },
+    "requiredAmount3": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "requiredStock4": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::stock.stock"
+    },
+    "requiredAmount4": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
     }
   }
 }

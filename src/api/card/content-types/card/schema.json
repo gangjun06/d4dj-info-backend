@@ -135,6 +135,12 @@
         }
       },
       "type": "integer"
+    },
+    "gachas": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::gacha.gacha",
+      "inversedBy": "pickUpCards"
     }
   }
 }

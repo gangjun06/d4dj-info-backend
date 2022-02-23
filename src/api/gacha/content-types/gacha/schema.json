@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "stocks",
+  "collectionName": "gachas",
   "info": {
-    "singularName": "stock",
-    "pluralName": "stocks",
-    "displayName": "Stock",
-    "description": ""
+    "singularName": "gacha",
+    "pluralName": "gachas",
+    "displayName": "Gacha"
   },
   "options": {
     "draftAndPublish": false
@@ -24,43 +23,27 @@
       },
       "type": "integer"
     },
-    "name": {
+    "tableRates": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "string"
+      "type": "json"
     },
-    "category": {
+    "tableIds": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "enumeration",
-      "enum": [
-        "Diamond",
-        "Fragment",
-        "Exp",
-        "SkillExp",
-        "LimitBreak",
-        "VoltageRecovery",
-        "Boost",
-        "MusicShop",
-        "Event",
-        "GachaTicket",
-        "Random",
-        "ParameterLevelUp",
-        "CardStack",
-        "Other"
-      ]
+      "type": "json"
     },
-    "viewCategory": {
+    "pickUpCards": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::stock-view-category.stock-view-category",
-      "inversedBy": "stocks"
+      "relation": "manyToMany",
+      "target": "api::card.card",
+      "inversedBy": "gachas"
     },
     "summary": {
       "pluginOptions": {
@@ -70,61 +53,13 @@
       },
       "type": "text"
     },
-    "attributeId": {
+    "hasSpecificBg": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "integer"
-    },
-    "rarity": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "exp": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "buffCharacterId": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "recoveryAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "consumeAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "maxAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
+      "type": "boolean"
     },
     "startDate": {
       "pluginOptions": {
@@ -142,7 +77,31 @@
       },
       "type": "datetime"
     },
-    "isAppropriateSales": {
+    "note": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "detail": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "loginTriggerMinutes": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "showHomeAnimation": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -150,16 +109,99 @@
       },
       "type": "boolean"
     },
-    "random": {
-      "displayName": "RandomStock",
-      "type": "component",
-      "repeatable": true,
+    "hasPickUpDuplicateBonus": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "component": "game.random-stock"
+      "type": "boolean"
+    },
+    "gachaCardAttribute": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "ascendingSortId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "category": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Normal",
+        "Tutorial",
+        "Event",
+        "Birthday",
+        "StartDash",
+        "Revival",
+        "Special"
+      ]
+    },
+    "bonusStockId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "selectBonusMaxValue": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "otherCardDate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "datetime"
+    },
+    "pickUpLevelMax": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean"
+    },
+    "stepLoopCount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "type": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Normal",
+        "StepUp",
+        "Audition"
+      ]
     }
   }
 }

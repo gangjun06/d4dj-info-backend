@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "rewards",
+  "collectionName": "quest_decks",
   "info": {
-    "singularName": "reward",
-    "pluralName": "rewards",
-    "displayName": "Reward",
-    "description": ""
+    "singularName": "quest-deck",
+    "pluralName": "quest-decks",
+    "displayName": "QuestDeck"
   },
   "options": {
     "draftAndPublish": false
@@ -24,7 +23,20 @@
       },
       "type": "integer"
     },
-    "category": {
+    "order": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "card": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::card.card"
+    },
+    "illustType": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -32,32 +44,10 @@
       },
       "type": "enumeration",
       "enum": [
-        "Stock",
-        "Stamp",
-        "Music",
-        "Movie",
-        "Honor",
-        "Episode",
-        "DuplicateCard",
-        "ClubItem",
-        "Card"
+        "Normal",
+        "LimitBreak",
+        "MaxLimitBreak"
       ]
-    },
-    "rewardId": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "amount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
     }
   }
 }

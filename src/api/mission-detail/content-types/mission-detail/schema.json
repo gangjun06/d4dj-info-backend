@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "option_presets",
+  "collectionName": "mission_details",
   "info": {
-    "singularName": "option-preset",
-    "pluralName": "option-presets",
-    "displayName": "OptionPreset",
+    "singularName": "mission-detail",
+    "pluralName": "mission-details",
+    "displayName": "MissionDetail",
     "description": ""
   },
   "options": {
@@ -24,7 +24,15 @@
       },
       "type": "integer"
     },
-    "name": {
+    "sequence": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "title": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -40,23 +48,20 @@
       },
       "type": "text"
     },
-    "isSelectable": {
+    "rewards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reward.reward"
+    },
+    "homePriority": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "boolean"
+      "type": "integer"
     },
-    "data": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text"
-    },
-    "dataDescription": {
+    "notifyType": {
       "pluginOptions": {
         "i18n": {
           "localized": true

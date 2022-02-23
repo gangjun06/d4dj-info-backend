@@ -1,0 +1,147 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quest_blocks",
+  "info": {
+    "singularName": "quest-block",
+    "pluralName": "quest-blocks",
+    "displayName": "QuestBlock",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "map": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::quest-map.quest-map",
+      "inversedBy": "blocks"
+    },
+    "order": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "chart": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::chart.chart"
+    },
+    "chartSection": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Full",
+        "Begin",
+        "Middle",
+        "End",
+        "DJSimulator"
+      ]
+    },
+    "deckId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "clubDeckId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "conditionType": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Hp",
+        "MaxCombo",
+        "GreatCount",
+        "GoodCount",
+        "BadCount",
+        "MissCount",
+        "Score"
+      ]
+    },
+    "conditionValue": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "clubFormationId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "deckPower": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "option": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::option-preset.option-preset"
+    },
+    "assistOption": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::assist-option-preset.assist-option-preset"
+    },
+    "firstRewards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reward.reward"
+    },
+    "loopRewards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reward.reward"
+    },
+    "name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    }
+  }
+}

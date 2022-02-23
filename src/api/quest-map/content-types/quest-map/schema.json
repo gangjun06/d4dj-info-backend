@@ -1,11 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "option_presets",
+  "collectionName": "quest_maps",
   "info": {
-    "singularName": "option-preset",
-    "pluralName": "option-presets",
-    "displayName": "OptionPreset",
-    "description": ""
+    "singularName": "quest-map",
+    "pluralName": "quest-maps",
+    "displayName": "QuestMap"
   },
   "options": {
     "draftAndPublish": false
@@ -32,7 +31,31 @@
       },
       "type": "string"
     },
-    "description": {
+    "startDate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "datetime"
+    },
+    "endDate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "datetime"
+    },
+    "maxPlayableCount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "bgm": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -40,15 +63,7 @@
       },
       "type": "text"
     },
-    "isSelectable": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "boolean"
-    },
-    "data": {
+    "backgroundPrefabFileName": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -56,13 +71,27 @@
       },
       "type": "text"
     },
-    "dataDescription": {
+    "recoveryStockId": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "text"
+      "type": "integer"
+    },
+    "recoveryStockAmount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "blocks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quest-block.quest-block",
+      "mappedBy": "map"
     }
   }
 }

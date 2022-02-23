@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_game_random_stocks",
+  "info": {
+    "displayName": "RandomStock",
+    "icon": "random",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "amount": {
+      "type": "integer"
+    },
+    "rate": {
+      "type": "integer"
+    },
+    "stockId": {
+      "type": "integer"
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "option_presets",
+  "collectionName": "mission_panels",
   "info": {
-    "singularName": "option-preset",
-    "pluralName": "option-presets",
-    "displayName": "OptionPreset",
+    "singularName": "mission-panel",
+    "pluralName": "mission-panels",
+    "displayName": "MissionPanel",
     "description": ""
   },
   "options": {
@@ -16,7 +16,29 @@
     }
   },
   "attributes": {
-    "masterID": {
+    "masterId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "group": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::mission-group.mission-group",
+      "inversedBy": "panels"
+    },
+    "bannerGroup": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "step": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -32,37 +54,10 @@
       },
       "type": "string"
     },
-    "description": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text"
-    },
-    "isSelectable": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "boolean"
-    },
-    "data": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text"
-    },
-    "dataDescription": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "text"
+    "allCompleteRewards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reward.reward"
     }
   }
 }

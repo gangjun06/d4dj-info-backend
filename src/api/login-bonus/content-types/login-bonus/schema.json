@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "stocks",
+  "collectionName": "login_bonuses",
   "info": {
-    "singularName": "stock",
-    "pluralName": "stocks",
-    "displayName": "Stock",
+    "singularName": "login-bonus",
+    "pluralName": "login-bonuses",
+    "displayName": "LoginBonus",
     "description": ""
   },
   "options": {
@@ -24,15 +24,7 @@
       },
       "type": "integer"
     },
-    "name": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "string"
-    },
-    "category": {
+    "type": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -40,37 +32,24 @@
       },
       "type": "enumeration",
       "enum": [
-        "Diamond",
-        "Fragment",
-        "Exp",
-        "SkillExp",
-        "LimitBreak",
-        "VoltageRecovery",
-        "Boost",
-        "MusicShop",
-        "Event",
-        "GachaTicket",
-        "Random",
-        "ParameterLevelUp",
-        "CardStack",
-        "Other"
+        "Common",
+        "Campaign",
+        "Subscription",
+        "VipBronze",
+        "VipSilver",
+        "VipGold",
+        "VipPlatinum"
       ]
     },
-    "viewCategory": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::stock-view-category.stock-view-category",
-      "inversedBy": "stocks"
-    },
-    "summary": {
+    "title": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "text"
+      "type": "string"
     },
-    "attributeId": {
+    "order": {
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -78,53 +57,13 @@
       },
       "type": "integer"
     },
-    "rarity": {
+    "loop": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "integer"
-    },
-    "exp": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "buffCharacterId": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "recoveryAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "consumeAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
-    },
-    "maxAmount": {
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "type": "integer"
+      "type": "boolean"
     },
     "startDate": {
       "pluginOptions": {
@@ -142,16 +81,56 @@
       },
       "type": "datetime"
     },
-    "isAppropriateSales": {
+    "subscriptionId": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "type": "boolean"
+      "type": "integer"
     },
-    "random": {
-      "displayName": "RandomStock",
+    "backgroundImage": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "foregroundImage": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "datePositions": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "json"
+    },
+    "limitDays": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "comebackDays": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "loginBonusItems": {
+      "displayName": "LoginBonusItem",
       "type": "component",
       "repeatable": true,
       "pluginOptions": {
@@ -159,7 +138,7 @@
           "localized": true
         }
       },
-      "component": "game.random-stock"
+      "component": "game.login-bonus-item"
     }
   }
 }
