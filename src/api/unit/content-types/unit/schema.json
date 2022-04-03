@@ -86,10 +86,10 @@
       },
       "type": "integer"
     },
-    "musicGames": {
+    "musics": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::music-game.music-game",
+      "target": "api::music.music",
       "mappedBy": "unit"
     },
     "episode": {

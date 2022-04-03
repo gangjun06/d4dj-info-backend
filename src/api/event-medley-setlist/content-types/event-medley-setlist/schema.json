@@ -33,7 +33,7 @@
     "musics": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::music-game.music-game"
+      "target": "api::music.music"
     },
     "requiredPoint": {
       "type": "integer",

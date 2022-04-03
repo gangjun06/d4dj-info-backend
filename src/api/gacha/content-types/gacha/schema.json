@@ -4,7 +4,8 @@
   "info": {
     "singularName": "gacha",
     "pluralName": "gachas",
-    "displayName": "Gacha"
+    "displayName": "Gacha",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -202,6 +203,14 @@
         "StepUp",
         "Audition"
       ]
+    },
+    "name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }

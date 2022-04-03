@@ -49,12 +49,6 @@
       },
       "component": "music.chart-note-count"
     },
-    "designer": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::chart-designer.chart-designer",
-      "inversedBy": "chart"
-    },
     "masterID": {
       "pluginOptions": {
         "i18n": {
@@ -66,7 +60,7 @@
     "music": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::music-game.music-game",
+      "target": "api::music.music",
       "inversedBy": "charts"
     },
     "achieveId": {
@@ -76,6 +70,22 @@
         }
       },
       "type": "integer"
+    },
+    "trends": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "music.trends"
+    },
+    "designer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::chart-designer.chart-designer",
+      "inversedBy": "charts"
     }
   }
 }

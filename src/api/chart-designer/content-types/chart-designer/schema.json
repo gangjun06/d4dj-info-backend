@@ -32,11 +32,11 @@
       },
       "type": "integer"
     },
-    "chart": {
+    "charts": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "oneToMany",
       "target": "api::chart.chart",
-      "inversedBy": "designer"
+      "mappedBy": "designer"
     }
   }
 }

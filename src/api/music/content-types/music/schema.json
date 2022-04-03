@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "music_games",
+  "collectionName": "music",
   "info": {
-    "singularName": "music-game",
-    "pluralName": "music-games",
-    "displayName": "MusicGame",
+    "singularName": "music",
+    "pluralName": "musics",
+    "displayName": "Music",
     "description": ""
   },
   "options": {
@@ -185,7 +185,7 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::unit.unit",
-      "inversedBy": "musicGames"
+      "inversedBy": "musics"
     },
     "musicMix": {
       "type": "component",
