@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_episode_unit_episodes",
+  "info": {
+    "displayName": "UnitEpisode",
+    "icon": "layer-group"
+  },
+  "options": {},
+  "attributes": {
+    "backgroundId": {
+      "type": "integer"
+    },
+    "season": {
+      "type": "integer"
+    },
+    "chapterNumber": {
+      "type": "integer"
+    },
+    "episode": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::episode.episode"
+    }
+  }
+}

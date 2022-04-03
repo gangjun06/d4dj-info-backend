@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quest_club_decks",
+  "info": {
+    "singularName": "quest-club-deck",
+    "pluralName": "quest-club-decks",
+    "displayName": "QuestClubDeck"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "spot": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::club-item-spot.club-item-spot"
+    },
+    "item": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::club-item.club-item"
+    },
+    "useSpecialEffect": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean"
+    }
+  }
+}

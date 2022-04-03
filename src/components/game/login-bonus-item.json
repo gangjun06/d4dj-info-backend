@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_game_login_bonus_items",
+  "info": {
+    "displayName": "LoginBonusItem",
+    "icon": "sitemap"
+  },
+  "options": {},
+  "attributes": {
+    "sequence": {
+      "type": "integer"
+    },
+    "rewards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::reward.reward"
+    },
+    "positions": {
+      "type": "json"
+    }
+  }
+}

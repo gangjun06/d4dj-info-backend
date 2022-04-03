@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_episode_events",
+  "info": {
+    "displayName": "EventEpisode",
+    "icon": "book",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "backgroundId": {
+      "type": "integer"
+    },
+    "chapterNumber": {
+      "type": "integer"
+    },
+    "episode": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::episode.episode"
+    }
+  }
+}

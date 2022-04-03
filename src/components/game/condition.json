@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_game_conditions",
+  "info": {
+    "displayName": "Condition",
+    "icon": "route",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "masterID": {
+      "type": "integer"
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "None",
+        "UserLevel",
+        "UnitLevel",
+        "EventPoint",
+        "Story",
+        "CharacterRank"
+      ]
+    },
+    "value": {
+      "type": "json"
+    }
+  }
+}

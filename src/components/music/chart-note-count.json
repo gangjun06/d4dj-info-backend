@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_music_chart_note_counts",
+  "info": {
+    "displayName": "ChartNoteCount",
+    "icon": "list"
+  },
+  "options": {},
+  "attributes": {
+    "section": {
+      "type": "enumeration",
+      "enum": [
+        "Full",
+        "Begin",
+        "Middle",
+        "End"
+      ]
+    },
+    "count": {
+      "type": "integer"
+    }
+  }
+}

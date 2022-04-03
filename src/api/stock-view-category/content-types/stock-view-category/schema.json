@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stock_view_categories",
+  "info": {
+    "singularName": "stock-view-category",
+    "pluralName": "stock-view-categories",
+    "displayName": "StockViewCategory",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "stocks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::stock.stock",
+      "mappedBy": "viewCategory"
+    }
+  }
+}

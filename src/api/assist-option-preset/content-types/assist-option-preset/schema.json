@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "assist_option_presets",
+  "info": {
+    "singularName": "assist-option-preset",
+    "pluralName": "assist-option-presets",
+    "displayName": "AssistOptionPreset"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "statusCode": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "passive_skill_descriptions",
+  "info": {
+    "singularName": "passive-skill-description",
+    "pluralName": "passive-skill-descriptions",
+    "displayName": "PassiveSkillDescription",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "type": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

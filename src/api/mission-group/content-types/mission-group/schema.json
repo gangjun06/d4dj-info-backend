@@ -1,0 +1,87 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mission_groups",
+  "info": {
+    "singularName": "mission-group",
+    "pluralName": "mission-groups",
+    "displayName": "MissionGroup"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "category": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Achievement",
+        "Tutorial",
+        "Chart",
+        "TimeLimited"
+      ]
+    },
+    "startDate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "datetime"
+    },
+    "endDate": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "datetime"
+    },
+    "resetType": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "text"
+    },
+    "resetValue": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "subscriptionId": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "panels": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::mission-panel.mission-panel",
+      "mappedBy": "group"
+    }
+  }
+}

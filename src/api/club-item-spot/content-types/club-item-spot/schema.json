@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "club_item_spots",
+  "info": {
+    "singularName": "club-item-spot",
+    "pluralName": "club-item-spots",
+    "displayName": "ClubItemSpot",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "Club",
+        "DJ",
+        "Stage",
+        "Ceiling"
+      ],
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "clubItems": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::club-item.club-item",
+      "mappedBy": "spot"
+    }
+  }
+}

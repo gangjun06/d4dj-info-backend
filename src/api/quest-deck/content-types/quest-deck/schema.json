@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quest_decks",
+  "info": {
+    "singularName": "quest-deck",
+    "pluralName": "quest-decks",
+    "displayName": "QuestDeck"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "order": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "card": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::card.card"
+    },
+    "illustType": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Normal",
+        "LimitBreak",
+        "MaxLimitBreak"
+      ]
+    }
+  }
+}

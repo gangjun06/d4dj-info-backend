@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_aggregation_bases",
+  "info": {
+    "singularName": "event-aggregation-base",
+    "pluralName": "event-aggregation-bases",
+    "displayName": "EventAggregationBase"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event",
+      "inversedBy": "eventAggregationBases"
+    },
+    "masterID": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "integer"
+    },
+    "aggregationType": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "MainAddPoint",
+        "Highscore",
+        "EngineSpecific",
+        "DailyAddPoint",
+        "CommonAddPoint"
+      ]
+    },
+    "pointTypeName": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "pointTypeIconName": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "eventMedleySetlists": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-medley-setlist.event-medley-setlist",
+      "mappedBy": "aggregation"
+    },
+    "rankingRewards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-ranking-reward.event-ranking-reward",
+      "mappedBy": "aggregation"
+    },
+    "eventPointRewards": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-point-reward.event-point-reward",
+      "mappedBy": "aggregation"
+    }
+  }
+}
